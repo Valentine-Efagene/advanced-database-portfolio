@@ -1,0 +1,13 @@
+PostgreSQL (ledger OLTP target):
+  postgresql://valpay:valpay_dev@localhost:5432/valpay
+
+MongoDB (KYC + activity):
+  mongodb://localhost:27017/valpay
+
+Portfolio SQLite evidence (local CA scripts):
+  advanced-database-portfolio/data/valpay.db
+
+Production mapping:
+  AWS RDS PostgreSQL Multi-AZ + read replica
+  MongoDB Atlas M10+ with backup
+  ElastiCache for idempotency / session

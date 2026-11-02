@@ -1,0 +1,61 @@
+erDiagram
+    CUSTOMER ||--o{ WALLET_ACCOUNT : owns
+    CUSTOMER ||--o{ BENEFICIARY : saves
+    WALLET_ACCOUNT ||--o{ LEDGER_POSTING : posts
+    TRANSACTION ||--|{ LEDGER_POSTING : contains
+    WALLET_TRANSACTION ||--o| TRANSFER_DETAIL : details
+    WALLET_TRANSACTION ||--o{ TRANSACTION_AUDIT : logs
+    WALLET_ACCOUNT ||--o{ TRANSFER_DETAIL : sends
+    WALLET_ACCOUNT ||--o{ TRANSFER_DETAIL : receives
+
+    CUSTOMER {
+        int customer_id PK
+        string email UK
+        string full_name
+        string phone UK
+        string kyc_tier
+        datetime created_at
+    }
+    WALLET_ACCOUNT {
+        int account_id PK
+        int customer_id FK
+        string account_number UK
+        string currency
+        decimal balance
+        string status
+    }
+    BENEFICIARY {
+        int beneficiary_id PK
+        int customer_id FK
+        string label
+        string account_number
+        string bank_code
+    }
+    WALLET_TRANSACTION {
+        int transaction_id PK
+        string reference UK
+        string txn_type
+        string status
+        decimal amount
+        string idempotency_key UK
+        datetime created_at
+    }
+    LEDGER_POSTING {
+        int posting_id PK
+        int transaction_id FK
+        int account_id FK
+        string direction
+        decimal amount
+    }
+    TRANSFER_DETAIL {
+        int transaction_id PK_FK
+        int from_account_id FK
+        int to_account_id FK
+        string narration
+    }
+    TRANSACTION_AUDIT {
+        int audit_id PK
+        int transaction_id FK
+        string event
+        datetime logged_at
+    }

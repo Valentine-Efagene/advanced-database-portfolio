@@ -1,0 +1,2 @@
+{"customer_id":"cust_valentine","document_type":"NIN","status":"VERIFIED","metadata":{"masked_id":"****4321","provider":"NIMC"},"submitted_at":{"$date":"2026-08-10T12:00:00Z"}}
+{"customer_id":"cust_chioma","document_type":"BVN","status":"PENDING","metadata":{"masked_id":"****8890"},"submitted_at":{"$date":"2026-10-20T09:30:00Z"}}
