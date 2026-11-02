@@ -1,24 +1,38 @@
-# MIT 8103 — Advanced Database Systems Portfolio (ValPay fintech)
+# MIT 8103 — Advanced Database Systems Portfolio
 
-**Student:** Valentine Efagene  
-**LMS upload folder:** `Efagene_Valentine_<StudentID>` — see [submission/README.md](./submission/README.md)
+**Student:** Valentine Efagene · **MIVA ID:** 301921385  
+**Case study:** [ValPay](./CASE_STUDY.md) — fintech wallet and P2P transfers  
 
-**Case study:** [ValPay](./CASE_STUDY.md) — wallet, P2P transfers, ledger (replace brand name with your live product if different).
+Private repository for assessors: grant read access before marking.
+
+## Structure
+
+| Path | Portfolio |
+|------|-----------|
+| [portfolio-1-database-design](./portfolio-1-database-design/) | ER model, schema, normalisation |
+| [portfolio-2-query-optimisation](./portfolio-2-query-optimisation/) | SQL, indexing, EXPLAIN plans |
+| [portfolio-3-transactions-concurrency](./portfolio-3-transactions-concurrency/) | ACID transfers (commit / rollback) |
+| [portfolio-4-nosql](./portfolio-4-nosql/) | MongoDB KYC and activity events |
+| [portfolio-5-distributed-cloud](./portfolio-5-distributed-cloud/) | Cloud HA, CAP, deployment notes |
+| [DOCUMENTATION.md](./DOCUMENTATION.md) | Summary, reflection, references |
+
+## Regenerate evidence
 
 ```bash
-cd advanced-database-portfolio
 ./scripts/init_and_evidence.sh
 ```
 
-Creates `data/valpay.db` and refreshes `portfolio-*/evidence/` text outputs.
+Rebuilds `data/valpay.db` (local only) and refreshes `portfolio-*/evidence/*.txt`.
 
-| Folder | Focus |
-|--------|--------|
-| portfolio-1-database-design | ER, schema, normalisation |
-| portfolio-2-query-optimisation | SQL + EXPLAIN |
-| portfolio-3-transactions-concurrency | P2P transfer ACID |
-| portfolio-4-nosql | KYC + activity events (MongoDB) |
-| portfolio-5-distributed-cloud | Cloud HA / CAP for fintech |
-| submission | LMS-named folder + CA PDF (run `apply_lms_naming.sh`) |
+## Suggested repo layout (CA brief)
 
-Push to a **private** GitHub repo. Build `Efagene_Valentine_<StudentID>/` and submit via [CA form](https://lms.miva.university/mod/page/view.php?id=166107) (**one attempt**).
+```
+portfolio-1-database-design/
+portfolio-2-query-optimisation/
+portfolio-3-transactions-concurrency/
+portfolio-4-nosql/
+portfolio-5-distributed-cloud/
+README.md
+DOCUMENTATION.md
+scripts/
+```

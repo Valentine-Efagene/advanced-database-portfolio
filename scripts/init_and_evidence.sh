@@ -3,7 +3,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DB="$ROOT/data/valpay.db"
 mkdir -p "$ROOT/data"
-rm -f "$DB"
+rm -f "$DB" "$ROOT/data/"*.db "$ROOT/data/"*.db-journal
 
 echo "Creating database at $DB"
 sqlite3 "$DB" < "$ROOT/portfolio-1-database-design/schema.sql"

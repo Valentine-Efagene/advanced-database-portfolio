@@ -1,6 +1,0 @@
-=== EXPLAIN Q3 BEFORE ===
-QUERY PLAN
-`--SCAN wallet_transaction USING COVERING INDEX sqlite_autoindex_wallet_transaction_1
-=== EXPLAIN Q3 AFTER ===
-QUERY PLAN
-`--SCAN wallet_transaction USING COVERING INDEX idx_transaction_reference

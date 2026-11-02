@@ -1,7 +1,0 @@
-# MIVA LMS submission identity (used by apply_lms_naming.sh)
-SURNAME=Efagene
-FIRSTNAME=Valentine
-# Set your MIVA student ID (numbers only, as on SIS), then run: ./submission/apply_lms_naming.sh
-STUDENT_ID=301921385
-GITHUB_PROFILE=https://github.com/Valentine-Efagene
-GITHUB_REPO=https://github.com/Valentine-Efagene/mit8103-advanced-database-portfolio
