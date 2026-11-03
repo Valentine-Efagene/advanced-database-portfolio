@@ -22,7 +22,9 @@ Private repository for assessors: grant read access before marking.
 ./scripts/init_and_evidence.sh
 ```
 
-Rebuilds `data/valpay.db` (local only) and refreshes `portfolio-*/evidence/*.txt`.
+Starts PostgreSQL via Docker, loads schema/seed, and refreshes `portfolio-*/evidence/*.txt`.
+
+**Requires:** Docker, `psql`, and `pg_dump` (PostgreSQL client tools).
 
 ## Suggested repo layout (CA brief)
 

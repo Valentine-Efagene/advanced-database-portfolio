@@ -1,11 +1,14 @@
-PostgreSQL (ledger OLTP target):
+PostgreSQL (ledger — Portfolios 1–3 evidence):
   postgresql://valpay:valpay_dev@localhost:5432/valpay
 
-MongoDB (KYC + activity):
+MongoDB (KYC + activity — Portfolio 4):
   mongodb://localhost:27017/valpay
 
-Portfolio SQLite evidence (local CA scripts):
-  advanced-database-portfolio/data/valpay.db
+Start stack:
+  docker compose -f portfolio-5-distributed-cloud/docker-compose.yml up -d
+
+Regenerate relational evidence:
+  ./scripts/init_and_evidence.sh
 
 Production mapping:
   AWS RDS PostgreSQL Multi-AZ + read replica

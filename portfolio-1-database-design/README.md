@@ -1,12 +1,18 @@
-# Portfolio 1 — Database design (ValPay fintech)
+# Portfolio 1 — Database design (ValPay)
 
-- [er-diagram.mmd](./er-diagram.mmd) — ER model (customer, wallet, ledger, transfer)
-- [schema.sql](./schema.sql) — DDL and indexes
-- [NORMALIZATION.md](./NORMALIZATION.md)
-- [evidence/schema_dump.txt](./evidence/schema_dump.txt) — run root script
+- [er-diagram.mmd](./er-diagram.mmd) — ER model (Mermaid)
+- [schema.sql](./schema.sql) — PostgreSQL DDL
+- [NORMALIZATION.md](./NORMALIZATION.md) — 1NF–3NF notes
+- [evidence/schema_dump.txt](./evidence/schema_dump.txt) — `pg_dump --schema-only`
+
+Apply schema locally:
 
 ```bash
-sqlite3 ../data/valpay.db < schema.sql
+./scripts/init_and_evidence.sh
 ```
 
-Or `./scripts/init_and_evidence.sh` from repository root.
+Or manually after PostgreSQL is running:
+
+```bash
+psql postgresql://valpay:valpay_dev@localhost:5432/valpay -f schema.sql
+```

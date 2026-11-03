@@ -1,6 +1,35 @@
-=== EXPLAIN Q3 BEFORE ===
-QUERY PLAN
-`--SCAN wallet_transaction USING COVERING INDEX sqlite_autoindex_wallet_transaction_1
-=== EXPLAIN Q3 AFTER ===
-QUERY PLAN
-`--SCAN wallet_transaction USING COVERING INDEX idx_transaction_reference
+DROP INDEX
+--- EXPLAIN Q3 BEFORE (no idx_transaction_reference) ---
+                                QUERY PLAN                                 
+---------------------------------------------------------------------------
+ Seq Scan on wallet_transaction t  (cost=0.00..1056.58 rows=1624 width=37)
+   Filter: (reference ~~ 'VP-TXN-202610%'::text)
+(2 rows)
+
+CREATE INDEX
+--- EXPLAIN Q3 AFTER (idx_transaction_reference) ---
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on wallet_transaction t  (cost=64.68..643.51 rows=1624 width=37)
+   Filter: (reference ~~ 'VP-TXN-202610%'::text)
+   ->  Bitmap Index Scan on idx_transaction_reference  (cost=0.00..64.28 rows=1986 width=0)
+         Index Cond: ((reference ~>=~ 'VP-TXN-202610'::text) AND (reference ~<~ 'VP-TXN-202611'::text))
+(4 rows)
+
+--- EXPLAIN Q1 (ledger by account via join) ---
+                                                 QUERY PLAN                                                 
+------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=6.13..175.68 rows=396 width=29)
+   ->  Nested Loop  (cost=5.84..40.78 rows=396 width=15)
+         ->  Hash Join  (cost=5.55..13.12 rows=1 width=8)
+               Hash Cond: (wa.customer_id = c.customer_id)
+               ->  Seq Scan on wallet_account wa  (cost=0.00..7.03 rows=203 width=16)
+               ->  Hash  (cost=5.54..5.54 rows=1 width=8)
+                     ->  Seq Scan on customer c  (cost=0.00..5.54 rows=1 width=8)
+                           Filter: (email = 'valentine.efagene@example.com'::text)
+         ->  Index Scan using idx_ledger_account on ledger_posting lp  (cost=0.29..23.69 rows=396 width=23)
+               Index Cond: (account_id = wa.account_id)
+   ->  Index Scan using wallet_transaction_pkey on wallet_transaction t  (cost=0.29..0.34 rows=1 width=30)
+         Index Cond: (transaction_id = lp.transaction_id)
+(12 rows)
+

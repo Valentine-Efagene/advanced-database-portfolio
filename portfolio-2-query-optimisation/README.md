@@ -1,5 +1,6 @@
 # Portfolio 2 — Query optimisation (ValPay)
 
-Business queries: wallet statement, daily transfer volume, reference lookup, low-balance monitoring, failed/pending queue.
+[queries.sql](./queries.sql) — reporting SQL  
+[optimisation.sql](./optimisation.sql) — indexes + `EXPLAIN (FORMAT TEXT)`
 
-Index `idx_transaction_reference` improves reference prefix lookup — see `evidence/explain_plans.txt`.
+Evidence: [evidence/](./evidence/) (regenerate with `./scripts/init_and_evidence.sh`).

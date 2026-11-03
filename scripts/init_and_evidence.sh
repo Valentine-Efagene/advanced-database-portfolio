@@ -1,32 +1,68 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-DB="$ROOT/data/valpay.db"
-mkdir -p "$ROOT/data"
-rm -f "$DB" "$ROOT/data/"*.db "$ROOT/data/"*.db-journal
+COMPOSE_FILE="$ROOT/portfolio-5-distributed-cloud/docker-compose.yml"
+SERVICE="${VALPAY_PG_SERVICE:-postgres-primary}"
 
-echo "Creating database at $DB"
-sqlite3 "$DB" < "$ROOT/portfolio-1-database-design/schema.sql"
-sqlite3 "$DB" < "$ROOT/scripts/seed.sql"
+export PGUSER="${PGUSER:-valpay}"
+export PGPASSWORD="${PGPASSWORD:-valpay_dev}"
+export PGDATABASE="${PGDATABASE:-valpay}"
+
+psql_in_container() {
+  docker compose -f "$COMPOSE_FILE" exec -T -e PGPASSWORD="$PGPASSWORD" "$SERVICE" \
+    psql -v ON_ERROR_STOP=1 -U "$PGUSER" -d "$PGDATABASE" "$@"
+}
+
+if ! command -v docker >/dev/null 2>&1; then
+  echo "docker is required to start PostgreSQL via compose."
+  exit 1
+fi
+
+echo "Starting PostgreSQL (docker compose)..."
+docker compose -f "$COMPOSE_FILE" up -d "$SERVICE"
+
+echo "Waiting for PostgreSQL..."
+for _ in $(seq 1 60); do
+  if docker compose -f "$COMPOSE_FILE" exec -T "$SERVICE" \
+      pg_isready -U "$PGUSER" -d "$PGDATABASE" >/dev/null 2>&1; then
+    break
+  fi
+  sleep 1
+done
+
+if ! docker compose -f "$COMPOSE_FILE" exec -T "$SERVICE" \
+    pg_isready -U "$PGUSER" -d "$PGDATABASE" >/dev/null 2>&1; then
+  echo "PostgreSQL did not become ready in time."
+  exit 1
+fi
+
+echo "Resetting schema in database: $PGDATABASE"
+psql_in_container <<'SQL'
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+GRANT ALL ON SCHEMA public TO valpay;
+GRANT ALL ON SCHEMA public TO public;
+SQL
+
+psql_in_container -f - < "$ROOT/portfolio-1-database-design/schema.sql"
+psql_in_container -f - < "$ROOT/scripts/seed.sql"
 
 mkdir -p "$ROOT/portfolio-1-database-design/evidence"
-sqlite3 "$DB" ".schema" > "$ROOT/portfolio-1-database-design/evidence/schema_dump.txt"
+docker compose -f "$COMPOSE_FILE" exec -T -e PGPASSWORD="$PGPASSWORD" "$SERVICE" \
+  pg_dump --schema-only --no-owner --no-privileges -U "$PGUSER" "$PGDATABASE" \
+  > "$ROOT/portfolio-1-database-design/evidence/schema_dump.txt"
 
 mkdir -p "$ROOT/portfolio-2-query-optimisation/evidence"
-sqlite3 "$DB" < "$ROOT/portfolio-2-query-optimisation/queries.sql" \
+psql_in_container -f - < "$ROOT/portfolio-2-query-optimisation/queries.sql" \
   > "$ROOT/portfolio-2-query-optimisation/evidence/query_results.txt" 2>&1
 
-{
-  echo "=== EXPLAIN Q3 BEFORE ==="
-  sqlite3 "$DB" "DROP INDEX IF EXISTS idx_transaction_reference;"
-  sqlite3 "$DB" "EXPLAIN QUERY PLAN SELECT transaction_id FROM wallet_transaction WHERE reference LIKE 'VP-TXN-202610%';"
-  echo "=== EXPLAIN Q3 AFTER ==="
-  sqlite3 "$DB" "CREATE INDEX IF NOT EXISTS idx_transaction_reference ON wallet_transaction(reference);"
-  sqlite3 "$DB" "EXPLAIN QUERY PLAN SELECT transaction_id FROM wallet_transaction WHERE reference LIKE 'VP-TXN-202610%';"
-} > "$ROOT/portfolio-2-query-optimisation/evidence/explain_plans.txt"
+# optimisation.sql drops idx_transaction_reference, runs EXPLAIN on Q3, recreates
+# the index (text_pattern_ops) and runs EXPLAIN again, plus the Q1 join plan.
+psql_in_container -f - < "$ROOT/portfolio-2-query-optimisation/optimisation.sql" \
+  > "$ROOT/portfolio-2-query-optimisation/evidence/explain_plans.txt" 2>&1
 
 mkdir -p "$ROOT/portfolio-3-transactions-concurrency/evidence"
-sqlite3 "$DB" < "$ROOT/portfolio-3-transactions-concurrency/transactions.sql" \
+psql_in_container -f - < "$ROOT/portfolio-3-transactions-concurrency/transactions.sql" \
   > "$ROOT/portfolio-3-transactions-concurrency/evidence/transaction_run.txt" 2>&1
 
-echo "Done. ValPay portfolio evidence updated."
+echo "Done. ValPay portfolio evidence updated (PostgreSQL)."

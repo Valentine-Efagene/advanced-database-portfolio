@@ -1,21 +1,24 @@
--- Portfolio 3: P2P transfer with ACID (ValPay)
-.headers on
-.mode column
+-- Portfolio 3: P2P transfer with ACID (ValPay, PostgreSQL)
 
-.print '=== Balances before transfer tests ==='
-SELECT account_number, balance FROM wallet_account ORDER BY account_id;
+\pset border 2
+\pset format aligned
 
-.print '=== Test A: FAILED transfer — insufficient funds ==='
-BEGIN IMMEDIATE;
+\echo '=== Balances before transfer tests ==='
+SELECT account_number, balance FROM wallet_account WHERE account_id <= 3 ORDER BY account_id;
+
+\echo '=== Test A: FAILED transfer — insufficient funds ==='
+BEGIN;
 
 INSERT INTO wallet_transaction (reference, txn_type, status, amount, idempotency_key)
 VALUES ('VP-TXN-FAIL-001', 'TRANSFER', 'PENDING', 999999.00, 'idem-fail-999');
 
-UPDATE wallet_account
-SET balance = balance - 999999.00
-WHERE account_id = 1 AND balance >= 999999.00;
-
-SELECT changes() AS balance_update_rows;
+WITH upd AS (
+    UPDATE wallet_account
+    SET balance = balance - 999999.00
+    WHERE account_id = 1 AND balance >= 999999.00
+    RETURNING account_id
+)
+SELECT COUNT(*)::int AS balance_update_rows FROM upd;
 
 ROLLBACK;
 
@@ -23,8 +26,8 @@ SELECT 'After rollback — no VP-TXN-FAIL-001' AS note,
        COUNT(*) AS cnt FROM wallet_transaction WHERE reference = 'VP-TXN-FAIL-001';
 SELECT balance AS valentine_balance FROM wallet_account WHERE account_id = 1;
 
-.print '=== Test B: SUCCESSFUL P2P transfer 2,500 NGN (account 1 -> 2) ==='
-BEGIN IMMEDIATE;
+\echo '=== Test B: SUCCESSFUL P2P transfer 2,500 NGN (account 1 -> 2) ==='
+BEGIN;
 
 INSERT INTO wallet_transaction (reference, txn_type, status, amount, idempotency_key)
 VALUES ('VP-TXN-OK-004', 'TRANSFER', 'PENDING', 2500.00, 'idem-ok-004-portfolio-demo');
@@ -51,7 +54,7 @@ SELECT transaction_id, 'TRANSFER_SUCCESS' FROM wallet_transaction WHERE referenc
 
 COMMIT;
 
-.print '=== After successful transfer ==='
+\echo '=== After successful transfer ==='
 SELECT t.reference, t.status, td.narration, wa.account_number, wa.balance
 FROM wallet_transaction t
 JOIN transfer_detail td ON td.transaction_id = t.transaction_id

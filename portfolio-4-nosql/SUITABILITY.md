@@ -1,6 +1,6 @@
 # NoSQL suitability for ValPay
 
-## Relational core (SQLite/PostgreSQL)
+## Relational core (PostgreSQL)
 
 Balances, ledger postings, and transfer status require **ACID** and referential integrity. This must stay relational.
 

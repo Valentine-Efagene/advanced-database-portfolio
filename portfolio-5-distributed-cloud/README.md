@@ -35,6 +35,12 @@ Production fintech architecture emphasises **strong consistency** on the ledger,
 
 ## Local demo
 
-[docker-compose.yml](./docker-compose.yml) — PostgreSQL + MongoDB for parity with Portfolios 1–4.
+[docker-compose.yml](./docker-compose.yml) — PostgreSQL (ledger) + MongoDB (Portfolios 1–4 evidence and NoSQL).
+
+Regenerate SQL evidence:
+
+```bash
+./scripts/init_and_evidence.sh
+```
 
 See [evidence/connection_notes.txt](./evidence/connection_notes.txt).

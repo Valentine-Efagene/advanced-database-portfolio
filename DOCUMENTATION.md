@@ -22,12 +22,12 @@ Evidence text outputs: run `./scripts/init_and_evidence.sh`.
 
 ## 3. Technical reflection
 
-A ledger + wallet balance model mirrors fintech constraints: balances must match controlled debits and credits. SQLite demonstrates the same transaction patterns as PostgreSQL for production ValPay. NoSQL stores KYC and behavioural events without weakening ledger ACID. The main lesson is polyglot persistence—money stays relational; analytics stays document-oriented.
+A ledger + wallet balance model mirrors fintech constraints: balances must match controlled debits and credits. PostgreSQL provides ACID transfers, row-level locking for concurrent payouts, and EXPLAIN-based optimisation aligned with production ValPay (RDS). NoSQL stores KYC and behavioural events without weakening ledger integrity. The main lesson is polyglot persistence—money stays relational; analytics stays document-oriented.
 
 ## 4. References
 
 - Miva Open University. (2026). *MIT 8103 CA brief — September cohort 2026*.
-- SQLite Project. https://www.sqlite.org/docs.html
+- PostgreSQL Global Development Group. https://www.postgresql.org/docs/
 - MongoDB Inc. https://www.mongodb.com/docs/
 - Nigeria Data Protection Act 2023 (NDPA).
 
