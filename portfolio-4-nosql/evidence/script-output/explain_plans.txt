@@ -1,0 +1,79 @@
+
+=== E1. Customer timeline: customer_id 57, latest 20 events ===
+Collection: activity_events (87886 documents)
+Index under test: customer_timeline {"customer_id":1,"ts":-1}
+  BEFORE (only _id index)
+    winning plan       : SORT <- COLLSCAN
+    nReturned          : 20
+    totalKeysExamined  : 0
+    totalDocsExamined  : 87886
+    executionTimeMillis: 19
+  AFTER (customer_timeline created)
+    winning plan       : LIMIT <- FETCH <- IXSCAN(customer_timeline)
+    nReturned          : 20
+    totalKeysExamined  : 20
+    totalDocsExamined  : 20
+    executionTimeMillis: 0
+  Docs examined: 87886 -> 20 (4394x fewer)
+
+=== E2. transfer_initiated events, 1-7 October 2026 ===
+Collection: activity_events (87886 documents)
+Index under test: event_time {"event":1,"ts":-1}
+  BEFORE (only _id index)
+    winning plan       : COLLSCAN
+    nReturned          : 293
+    totalKeysExamined  : 0
+    totalDocsExamined  : 87886
+    executionTimeMillis: 27
+  AFTER (event_time created)
+    winning plan       : FETCH <- IXSCAN(event_time)
+    nReturned          : 293
+    totalKeysExamined  : 293
+    totalDocsExamined  : 293
+    executionTimeMillis: 0
+  Docs examined: 87886 -> 293 (300x fewer)
+
+=== E3. Trace reference VP-TXN-20261026-039684 ===
+Collection: activity_events (87886 documents)
+Index under test: txn_reference {"reference":1} sparse
+  BEFORE (only _id index)
+    winning plan       : COLLSCAN
+    nReturned          : 1
+    totalKeysExamined  : 0
+    totalDocsExamined  : 87886
+    executionTimeMillis: 25
+  AFTER (txn_reference created)
+    winning plan       : FETCH <- IXSCAN(txn_reference)
+    nReturned          : 1
+    totalKeysExamined  : 1
+    totalDocsExamined  : 1
+    executionTimeMillis: 0
+  Docs examined: 87886 -> 1 (87886x fewer)
+
+=== E4. KYC review queue: PENDING, oldest first ===
+Collection: kyc_documents (464 documents)
+Index under test: pending_review_queue {"submitted_at":1} partial {"status":"PENDING"}
+  BEFORE (only _id index)
+    winning plan       : SORT <- COLLSCAN
+    nReturned          : 44
+    totalKeysExamined  : 0
+    totalDocsExamined  : 464
+    executionTimeMillis: 0
+  AFTER (pending_review_queue created)
+    winning plan       : FETCH <- IXSCAN(pending_review_queue)
+    nReturned          : 44
+    totalKeysExamined  : 44
+    totalDocsExamined  : 44
+    executionTimeMillis: 0
+  Docs examined: 464 -> 44 (11x fewer)
+
+=== Partial index coverage ===
+  pending_review_queue indexes 44 of 464 kyc_documents (status PENDING only)
+
+=== The partial index is not used for VERIFIED documents ===
+  status VERIFIED sorted by submitted_at
+    winning plan       : SORT <- FETCH <- IXSCAN(status_doc_type)
+    nReturned          : 374
+    totalKeysExamined  : 374
+    totalDocsExamined  : 374
+    executionTimeMillis: 0

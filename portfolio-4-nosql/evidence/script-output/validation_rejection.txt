@@ -1,0 +1,184 @@
+kyc_documents before tests: 464
+
+=== V1. Unknown document type (DRIVERS_LICENCE) ===
+Document: {"customer_id":57,"account_number":"VP2000000054","document_type":"DRIVERS_LICENCE","status":"PENDING",
+    "metadata":{"masked_id":"A1234***","issuing_country":"NG"},"submitted_at":{"$date":"2026-11-01T09:00:00Z"}}
+Result: REJECTED, code 121 (DocumentValidationFailure): Document failed validation
+Why: {
+  "operatorName": "$and",
+  "clausesNotSatisfied": [
+    {
+      "index": 0,
+      "details": {
+        "operatorName": "$jsonSchema",
+        "schemaRulesNotSatisfied": [
+          {
+            "operatorName": "properties",
+            "propertiesNotSatisfied": [
+              {
+                "propertyName": "document_type",
+                "details": [
+                  {
+                    "operatorName": "enum",
+                    "specifiedAs": {
+                      "enum": [
+                        "NIN",
+                        "BVN",
+                        "PASSPORT",
+                        "UTILITY_BILL"
+                      ]
+                    },
+                    "reason": "value was not found in enum",
+                    "consideredValue": "DRIVERS_LICENCE"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+
+=== V2. Old string customer id and a missing submitted_at ===
+Document: {"customer_id":"cust_valentine","account_number":"VP2000000054","document_type":"PASSPORT","status":"PENDING",
+    "metadata":{"masked_id":"A1234***","issuing_country":"NG"}}
+Result: REJECTED, code 121 (DocumentValidationFailure): Document failed validation
+Why: {
+  "operatorName": "$and",
+  "clausesNotSatisfied": [
+    {
+      "index": 0,
+      "details": {
+        "operatorName": "$jsonSchema",
+        "schemaRulesNotSatisfied": [
+          {
+            "operatorName": "properties",
+            "propertiesNotSatisfied": [
+              {
+                "propertyName": "customer_id",
+                "description": "customer.customer_id in PostgreSQL (Portfolio 1)",
+                "details": [
+                  {
+                    "operatorName": "bsonType",
+                    "specifiedAs": {
+                      "bsonType": "int"
+                    },
+                    "reason": "type did not match",
+                    "consideredValue": "cust_valentine",
+                    "consideredType": "string"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "operatorName": "required",
+            "specifiedAs": {
+              "required": [
+                "customer_id",
+                "account_number",
+                "document_type",
+                "status",
+                "metadata",
+                "submitted_at"
+              ]
+            },
+            "missingProperties": [
+              "submitted_at"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+
+=== V3. Account number not in the VP + 10 digits format ===
+Document: {"customer_id":57,"account_number":"0123456789","document_type":"PASSPORT","status":"PENDING",
+    "metadata":{"masked_id":"A1234***","issuing_country":"NG"},"submitted_at":{"$date":"2026-11-01T09:00:00Z"}}
+Result: REJECTED, code 121 (DocumentValidationFailure): Document failed validation
+Why: {
+  "operatorName": "$and",
+  "clausesNotSatisfied": [
+    {
+      "index": 0,
+      "details": {
+        "operatorName": "$jsonSchema",
+        "schemaRulesNotSatisfied": [
+          {
+            "operatorName": "properties",
+            "propertiesNotSatisfied": [
+              {
+                "propertyName": "account_number",
+                "description": "wallet_account.account_number in PostgreSQL",
+                "details": [
+                  {
+                    "operatorName": "pattern",
+                    "specifiedAs": {
+                      "pattern": "^VP[0-9]{10}$"
+                    },
+                    "reason": "regular expression did not match",
+                    "consideredValue": "0123456789"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+
+=== V4. REJECTED without a rejection_reason ===
+Document: {"customer_id":57,"account_number":"VP2000000054","document_type":"PASSPORT","status":"REJECTED",
+    "metadata":{"masked_id":"A1234***","issuing_country":"NG"},"submitted_at":{"$date":"2026-11-01T09:00:00Z"},
+    "reviewer":"compliance.agent01","reviewed_at":{"$date":"2026-11-01T12:00:00Z"}}
+Result: REJECTED, code 121 (DocumentValidationFailure): Document failed validation
+Why: {
+  "operatorName": "$and",
+  "clausesNotSatisfied": [
+    {
+      "index": 1,
+      "details": {
+        "operatorName": "$or",
+        "clausesNotSatisfied": [
+          {
+            "index": 0,
+            "details": {
+              "operatorName": "$ne",
+              "specifiedAs": {
+                "status": {
+                  "$ne": "REJECTED"
+                }
+              },
+              "reason": "comparison succeeded",
+              "consideredValue": "REJECTED"
+            }
+          },
+          {
+            "index": 1,
+            "details": {
+              "operatorName": "$type",
+              "specifiedAs": {
+                "metadata.rejection_reason": {
+                  "$type": "string"
+                }
+              },
+              "reason": "field was missing"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+
+=== V5. Valid PASSPORT submission (accepted, then removed) ===
+Document: {"customer_id":57,"account_number":"VP2000000054","document_type":"PASSPORT","status":"PENDING",
+    "metadata":{"masked_id":"A1234***","issuing_country":"NG"},"submitted_at":{"$date":"2026-11-01T09:00:00Z"}}
+Result: ACCEPTED
+
+kyc_documents after tests: 464 (test document removed)

@@ -1,0 +1,139 @@
+
+=== Q1. KYC review queue (PENDING, oldest first, first 10) ===
+Pending documents: 44
+{"customer_id":139,"account_number":"VP2000000136","document_type":"UTILITY_BILL","metadata":{"provider":"PHED"},
+    "submitted_at":{"$date":"2026-10-02T16:30:00Z"}}
+{"customer_id":56,"account_number":"VP2000000053","document_type":"UTILITY_BILL","metadata":{"provider":"PHED"},"submitted_at":{"$date":"2026-10-02T17:10:00Z"}}
+{"customer_id":27,"account_number":"VP2000000024","document_type":"NIN","metadata":{"provider":"NIMC"},"submitted_at":{"$date":"2026-10-03T22:27:00Z"}}
+{"customer_id":70,"account_number":"VP2000000067","document_type":"UTILITY_BILL","metadata":{"provider":"AEDC"},"submitted_at":{"$date":"2026-10-05T12:13:00Z"}}
+{"customer_id":141,"account_number":"VP2000000138","document_type":"NIN","metadata":{"provider":"NIMC"},"submitted_at":{"$date":"2026-10-09T02:07:00Z"}}
+{"customer_id":85,"account_number":"VP2000000082","document_type":"UTILITY_BILL","metadata":{"provider":"IKEDC"},
+    "submitted_at":{"$date":"2026-10-09T09:35:00Z"}}
+{"customer_id":122,"account_number":"VP2000000119","document_type":"UTILITY_BILL","metadata":{"provider":"AEDC"},
+    "submitted_at":{"$date":"2026-10-09T11:57:00Z"}}
+{"customer_id":26,"account_number":"VP2000000023","document_type":"UTILITY_BILL","metadata":{"provider":"AEDC"},"submitted_at":{"$date":"2026-10-10T00:56:00Z"}}
+{"customer_id":159,"account_number":"VP2000000156","document_type":"NIN","metadata":{"provider":"NIMC"},"submitted_at":{"$date":"2026-10-10T09:38:00Z"}}
+{"customer_id":57,"account_number":"VP2000000054","document_type":"NIN","metadata":{"provider":"NIMC"},"submitted_at":{"$date":"2026-10-11T00:19:00Z"}}
+
+=== Q2. KYC funnel by document type and status ===
+{"total":202,"document_type":"BVN","verified":202,"pending":0,"rejected":0}
+{"total":187,"document_type":"NIN","verified":142,"pending":15,"rejected":30}
+{"total":63,"document_type":"UTILITY_BILL","verified":20,"pending":29,"rejected":14}
+{"total":12,"document_type":"PASSPORT","verified":10,"pending":0,"rejected":2}
+
+=== Q3. Rejection reasons by document type ===
+{"n":12,"document_type":"NIN","reason":"nin_not_found"}
+{"n":10,"document_type":"NIN","reason":"name_mismatch"}
+{"n":8,"document_type":"NIN","reason":"blurry_image"}
+{"n":8,"document_type":"UTILITY_BILL","reason":"address_mismatch"}
+{"n":5,"document_type":"UTILITY_BILL","reason":"blurry_image"}
+{"n":2,"document_type":"PASSPORT","reason":"expired_document"}
+{"n":1,"document_type":"UTILITY_BILL","reason":"older_than_3_months"}
+
+=== Q4. KYC tier derived from verified documents ===
+{"customers":60,"tier":"TIER1"}
+{"customers":122,"tier":"TIER2"}
+{"customers":20,"tier":"TIER3"}
+
+=== Q5. Customer timeline, customer_id 57 (latest 12 events) ===
+{"event":"transfer_initiated","device_id":"dev_aaa1d3733c62","ip":"105.112.234.201","reference":"VP-TXN-20261026-039684","amount_ngn":18070.29,
+    "ts":{"$date":"2026-10-26T16:51:58Z"}}
+{"event":"otp_sent","device_id":"dev_aaa1d3733c62","ip":"105.112.234.201","ts":{"$date":"2026-10-26T16:50:58Z"}}
+{"event":"login_success","device_id":"dev_aaa1d3733c62","ip":"105.112.234.201","ts":{"$date":"2026-10-26T16:48:58Z"}}
+{"event":"transfer_initiated","device_id":"dev_aaa1d3733c62","ip":"105.112.234.201","reference":"VP-TXN-20261025-039625","amount_ngn":25000.76,
+    "ts":{"$date":"2026-10-25T17:23:59Z"}}
+{"event":"otp_sent","device_id":"dev_aaa1d3733c62","ip":"105.112.234.201","ts":{"$date":"2026-10-25T17:22:59Z"}}
+{"event":"login_success","device_id":"dev_aaa1d3733c62","ip":"105.112.234.201","ts":{"$date":"2026-10-25T17:20:59Z"}}
+{"event":"transfer_initiated","device_id":"dev_aaa1d3733c62","ip":"105.112.234.201","reference":"VP-TXN-20261023-039512","amount_ngn":9490.26,
+    "ts":{"$date":"2026-10-23T19:48:23Z"}}
+{"event":"otp_sent","device_id":"dev_aaa1d3733c62","ip":"105.112.234.201","ts":{"$date":"2026-10-23T19:47:23Z"}}
+{"event":"login_success","device_id":"dev_aaa1d3733c62","ip":"105.112.234.201","ts":{"$date":"2026-10-23T19:45:23Z"}}
+{"event":"transfer_initiated","device_id":"dev_14bacc0e9a20","ip":"105.112.234.201","reference":"VP-TXN-20261020-039301","amount_ngn":20150.5,
+    "ts":{"$date":"2026-10-20T07:18:11Z"}}
+{"event":"otp_sent","device_id":"dev_14bacc0e9a20","ip":"105.112.234.201","ts":{"$date":"2026-10-20T07:17:11Z"}}
+{"event":"login_success","device_id":"dev_14bacc0e9a20","ip":"105.112.234.201","ts":{"$date":"2026-10-20T07:15:11Z"}}
+
+=== Q6. Transfers initiated 1-7 October 2026 ===
+{"transfers":291,"txn_status":"SUCCESS","total_ngn":4365034.68}
+{"transfers":2,"txn_status":"PENDING","total_ngn":37821}
+Largest five in the window:
+{"account_number":"VP2000000144","reference":"VP-TXN-20261001-038160","amount_ngn":29920.78,"beneficiary":"VP2000000098","ts":{"$date":"2026-10-01T05:05:21Z"}}
+{"account_number":"VP2000000091","reference":"VP-TXN-20261003-038321","amount_ngn":29910.11,"beneficiary":"VP2000000192","ts":{"$date":"2026-10-03T21:52:11Z"}}
+{"account_number":"VP2000000026","reference":"VP-TXN-20261001-038152","amount_ngn":29820.12,"beneficiary":"VP2000000199","ts":{"$date":"2026-10-01T01:56:49Z"}}
+{"account_number":"VP2000000190","reference":"VP-TXN-20261005-038442","amount_ngn":29740.9,"beneficiary":"VP2000000042","ts":{"$date":"2026-10-05T22:16:20Z"}}
+{"account_number":"VP2000000041","reference":"VP-TXN-20261003-038283","amount_ngn":29690.38,"beneficiary":"VP2000000137","ts":{"$date":"2026-10-03T06:41:38Z"}}
+
+=== Q7. Fraud rule hits by rule ===
+{"hits":741,"max_score":0.99,"step_up":259,"blocked":0,"rule":"new_device_high_value","customers":195,"avg_score":0.777}
+{"hits":377,"max_score":0.99,"step_up":377,"blocked":0,"rule":"shared_device_multi_account","customers":40,"avg_score":0.852}
+{"hits":240,"max_score":0.99,"step_up":0,"blocked":240,"rule":"failed_login_burst","customers":135,"avg_score":0.919}
+{"hits":144,"max_score":0.99,"step_up":144,"blocked":0,"rule":"velocity_5_txn_1min","customers":109,"avg_score":0.778}
+{"hits":78,"max_score":0.99,"step_up":78,"blocked":0,"rule":"impossible_travel","customers":62,"avg_score":0.835}
+
+=== Q8. Fraud rule hits per month, 2026 ===
+{"hits":65,"month":"2026-01"}
+{"hits":73,"month":"2026-02"}
+{"hits":76,"month":"2026-03"}
+{"hits":75,"month":"2026-04"}
+{"hits":81,"month":"2026-05"}
+{"hits":72,"month":"2026-06"}
+{"hits":75,"month":"2026-07"}
+{"hits":66,"month":"2026-08"}
+{"hits":68,"month":"2026-09"}
+{"hits":77,"month":"2026-10"}
+
+=== Q9. Top 8 risky devices ===
+{"failed_logins":246,"rule_hits":135,"last_seen":{"$date":"2026-10-21T14:03:00Z"},"device_id":"dev_4268e0c623a0","customer_count":49,"ip_count":1,
+    "risk_score":0.99}
+{"failed_logins":245,"rule_hits":132,"last_seen":{"$date":"2026-10-29T17:04:07Z"},"device_id":"dev_84f435b57fbd","customer_count":51,"ip_count":1,
+    "risk_score":0.99}
+{"failed_logins":236,"rule_hits":123,"last_seen":{"$date":"2026-10-24T23:01:00Z"},"device_id":"dev_899a0b812d62","customer_count":49,"ip_count":1,
+    "risk_score":0.99}
+{"failed_logins":241,"rule_hits":123,"last_seen":{"$date":"2026-10-22T18:52:15Z"},"device_id":"dev_ae0269b0efeb","customer_count":49,"ip_count":1,
+    "risk_score":0.99}
+{"failed_logins":248,"rule_hits":106,"last_seen":{"$date":"2026-10-27T08:30:15Z"},"device_id":"dev_f4c0bf3dae82","customer_count":50,"ip_count":1,
+    "risk_score":0.99}
+{"failed_logins":2,"rule_hits":4,"last_seen":{"$date":"2026-10-31T08:38:41Z"},"device_id":"dev_767d176b410e","customer_count":1,"ip_count":5,"risk_score":0.51}
+{"failed_logins":5,"rule_hits":3,"last_seen":{"$date":"2026-10-18T09:10:26Z"},"device_id":"dev_2af25aa3f906","customer_count":1,"ip_count":2,"risk_score":0.51}
+{"failed_logins":3,"rule_hits":2,"last_seen":{"$date":"2026-10-21T07:38:17Z"},"device_id":"dev_3f42b817d261","customer_count":1,"ip_count":2,"risk_score":0.51}
+
+=== Q10. Open fraud cases (newest first, first 8) ===
+Open cases: 58
+{"customer_id":73,"rule":"velocity_5_txn_1min","score":0.98,"action":"STEP_UP","reference":"VP-TXN-20261031-039964",
+    "detected_at":{"$date":"2026-10-31T09:10:52Z"}}
+{"customer_id":59,"rule":"new_device_high_value","score":0.6,"action":"ALLOW","reference":"VP-TXN-20261031-039960",
+    "detected_at":{"$date":"2026-10-31T07:46:35Z"}}
+{"customer_id":142,"rule":"new_device_high_value","score":0.95,"action":"STEP_UP","reference":"VP-TXN-20261031-039952",
+    "detected_at":{"$date":"2026-10-31T04:38:03Z"}}
+{"customer_id":159,"rule":"velocity_5_txn_1min","score":0.61,"action":"STEP_UP","reference":"VP-TXN-20261030-039910",
+    "detected_at":{"$date":"2026-10-30T11:43:14Z"}}
+{"customer_id":9,"rule":"new_device_high_value","score":0.67,"action":"STEP_UP","reference":"VP-TXN-20261030-039905",
+    "detected_at":{"$date":"2026-10-30T09:42:53Z"}}
+{"customer_id":63,"rule":"shared_device_multi_account","score":0.85,"action":"STEP_UP","reference":"VP-TXN-20261029-039864",
+    "detected_at":{"$date":"2026-10-29T17:04:07Z"}}
+{"customer_id":144,"rule":"new_device_high_value","score":0.59,"action":"ALLOW","reference":"VP-TXN-20261028-039790",
+    "detected_at":{"$date":"2026-10-28T11:35:08Z"}}
+{"customer_id":38,"rule":"new_device_high_value","score":0.58,"action":"STEP_UP","reference":"VP-TXN-20261028-039766",
+    "detected_at":{"$date":"2026-10-28T01:49:31Z"}}
+
+=== Q11. Trace VP-TXN-OK-004 (the Portfolio 3 transfer) and the session around it ===
+{"event":"transfer_initiated","customer_id":1,"account_number":"VP1000000001","device_id":"dev_e94bebb5927b","ip":"105.112.129.46","channel":"ios",
+    "reference":"VP-TXN-OK-004","amount_ngn":2500,"beneficiary":"VP1000000002","txn_status":"SUCCESS","ts":{"$date":"2026-10-28T07:05:00Z"}}
+{"event":"login_success","device_id":"dev_e94bebb5927b","ip":"105.112.129.46","ts":{"$date":"2026-10-28T07:02:00Z"}}
+{"event":"otp_sent","device_id":"dev_e94bebb5927b","ip":"105.112.129.46","ts":{"$date":"2026-10-28T07:04:00Z"}}
+{"event":"transfer_initiated","device_id":"dev_e94bebb5927b","ip":"105.112.129.46","ts":{"$date":"2026-10-28T07:05:00Z"}}
+
+=== Q12. Customers on shared-device rule hits with KYC still pending ===
+{"hits":11,"last_hit":{"$date":"2026-07-07T22:54:07Z"},"pending_kyc":[{"document_type":"UTILITY_BILL","submitted_at":{"$date":"2026-10-25T03:29:00Z"}}],
+    "customer_id":167}
+{"hits":10,"last_hit":{"$date":"2026-09-17T21:19:43Z"},"pending_kyc":[{"document_type":"UTILITY_BILL","submitted_at":{"$date":"2026-10-25T10:48:00Z"}}],
+    "customer_id":67}
+{"hits":10,"last_hit":{"$date":"2026-10-02T05:09:25Z"},"pending_kyc":[{"document_type":"NIN","submitted_at":{"$date":"2026-10-10T09:38:00Z"}}],
+    "customer_id":159}
+{"hits":10,"last_hit":{"$date":"2026-10-24T23:01:00Z"},"pending_kyc":[{"document_type":"UTILITY_BILL","submitted_at":{"$date":"2026-10-16T22:11:00Z"}}],
+    "customer_id":50}
+{"hits":9,"last_hit":{"$date":"2026-07-27T02:31:13Z"},"pending_kyc":[{"document_type":"UTILITY_BILL","submitted_at":{"$date":"2026-10-25T11:39:00Z"}}],
+    "customer_id":200}
+{"hits":9,"last_hit":{"$date":"2026-08-11T12:09:14Z"},"pending_kyc":[{"document_type":"NIN","submitted_at":{"$date":"2026-10-17T07:34:00Z"}}],"customer_id":192}
+{"hits":8,"last_hit":{"$date":"2026-08-01T19:10:10Z"},"pending_kyc":[{"document_type":"UTILITY_BILL","submitted_at":{"$date":"2026-10-19T04:00:00Z"}}],
+    "customer_id":134}

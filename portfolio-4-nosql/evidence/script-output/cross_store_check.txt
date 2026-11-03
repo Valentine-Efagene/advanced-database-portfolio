@@ -1,0 +1,18 @@
+=== Cross-store check: MongoDB (valpay) against PostgreSQL (valpay) ===
+
+Transfers: transfer_initiated events vs wallet_transaction + transfer_detail
+  (reference | amount | from account | to account)
+  MongoDB events            : 28003
+  PostgreSQL transfers      : 28003
+  identical in both         : 28003
+  only in MongoDB           : 0
+  only in PostgreSQL        : 0
+
+KYC tiers: tier derived from VERIFIED kyc_documents vs customer.kyc_tier (ops wallet 3 excluded)
+  customers compared        : 202
+  same tier                 : 202
+  different or missing      : 0
+
+Sample: VP-TXN-OK-004 in both stores
+  MongoDB   : VP-TXN-OK-004|2500.00|VP1000000001|VP1000000002
+  PostgreSQL: VP-TXN-OK-004|2500.00|VP1000000001|VP1000000002

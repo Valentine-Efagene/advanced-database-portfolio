@@ -1,0 +1,116 @@
+=== ValPay MongoDB seed (database: valpay, MongoDB 7.0.45) ===
+Customers covered: 202 (customer_id 1, 2 and 4-203; 3 is the ops wallet)
+
+kyc_documents       464 documents
+activity_events   87886 documents
+fraud_signals      2484 documents
+
+activity_events by event:
+  login_success         28003
+  otp_sent              28003
+  transfer_initiated    28003
+  login_failed           2297
+  fraud_rule_hit         1580
+  time span: 2025-01-01T00:08:59.000Z to 2026-10-31T23:49:14.000Z
+
+kyc_documents by status:
+  PENDING                  44
+  REJECTED                 46
+  VERIFIED                374
+
+fraud_signals by signal_type:
+  DEVICE_SUMMARY          904
+  RULE_HIT               1580
+
+Indexes:
+  kyc_documents._id_ {"_id":1}
+  kyc_documents.customer_doc_latest {"customer_id":1,"document_type":1,"submitted_at":-1}
+  kyc_documents.pending_review_queue {"submitted_at":1}  partial {"status":"PENDING"}
+  kyc_documents.status_doc_type {"status":1,"document_type":1}
+  activity_events._id_ {"_id":1}
+  activity_events.customer_timeline {"customer_id":1,"ts":-1}
+  activity_events.event_time {"event":1,"ts":-1}
+  activity_events.device_time {"device_id":1,"ts":-1}
+  activity_events.txn_reference {"reference":1}  sparse
+  activity_events.retention_ttl_3y {"ts":1}  TTL 94608000s
+  fraud_signals._id_ {"_id":1}
+  fraud_signals.type_risk {"signal_type":1,"risk_score":-1}
+  fraud_signals.case_queue {"signal_type":1,"case_status":1,"detected_at":-1}
+  fraud_signals.customer_cases {"customer_id":1,"detected_at":-1}  partial {"signal_type":"RULE_HIT"}
+
+kyc_documents validator (from kyc_schema.json plus the REJECTED rule):
+{
+  validator: {
+    '$and': [
+      {
+        '$jsonSchema': {
+          bsonType: 'object',
+          required: [
+            'customer_id',
+            'account_number',
+            'document_type',
+            'status',
+            'metadata',
+            'submitted_at'
+          ],
+          properties: {
+            customer_id: {
+              bsonType: 'int',
+              minimum: 1,
+              description: 'customer.customer_id in PostgreSQL (Portfolio 1)'
+            },
+            account_number: {
+              bsonType: 'string',
+              pattern: '^VP[0-9]{10}$',
+              description: 'wallet_account.account_number in PostgreSQL'
+            },
+            document_type: {
+              enum: [
+                'NIN',
+                'BVN',
+                'PASSPORT',
+                'UTILITY_BILL'
+              ]
+            },
+            status: {
+              enum: [
+                'PENDING',
+                'VERIFIED',
+                'REJECTED'
+              ]
+            },
+            metadata: {
+              bsonType: 'object',
+              description: 'Fields vary by document_type (NIN, BVN, passport, utility bill)'
+            },
+            submitted_at: {
+              bsonType: 'date'
+            },
+            reviewed_at: {
+              bsonType: 'date'
+            },
+            reviewer: {
+              bsonType: 'string'
+            }
+          }
+        }
+      },
+      {
+        '$or': [
+          {
+            status: {
+              '$ne': 'REJECTED'
+            }
+          },
+          {
+            'metadata.rejection_reason': {
+              '$type': 'string'
+            }
+          }
+        ]
+      }
+    ]
+  },
+  validationLevel: 'strict',
+  validationAction: 'error'
+}

@@ -1,13 +1,27 @@
 {
   "$jsonSchema": {
     "bsonType": "object",
-    "required": ["customer_id", "document_type", "status", "submitted_at"],
+    "required": ["customer_id", "account_number", "document_type", "status", "metadata", "submitted_at"],
     "properties": {
-      "customer_id": { "bsonType": "string" },
+      "customer_id": {
+        "bsonType": "int",
+        "minimum": 1,
+        "description": "customer.customer_id in PostgreSQL (Portfolio 1)"
+      },
+      "account_number": {
+        "bsonType": "string",
+        "pattern": "^VP[0-9]{10}$",
+        "description": "wallet_account.account_number in PostgreSQL"
+      },
       "document_type": { "enum": ["NIN", "BVN", "PASSPORT", "UTILITY_BILL"] },
       "status": { "enum": ["PENDING", "VERIFIED", "REJECTED"] },
-      "metadata": { "bsonType": "object" },
-      "submitted_at": { "bsonType": "date" }
+      "metadata": {
+        "bsonType": "object",
+        "description": "Fields vary by document_type (NIN, BVN, passport, utility bill)"
+      },
+      "submitted_at": { "bsonType": "date" },
+      "reviewed_at": { "bsonType": "date" },
+      "reviewer": { "bsonType": "string" }
     }
   }
 }

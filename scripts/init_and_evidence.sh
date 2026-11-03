@@ -47,22 +47,22 @@ SQL
 psql_in_container -f - < "$ROOT/portfolio-1-database-design/schema.sql"
 psql_in_container -f - < "$ROOT/scripts/seed.sql"
 
-mkdir -p "$ROOT/portfolio-1-database-design/evidence"
+mkdir -p "$ROOT/portfolio-1-database-design/evidence/script-output"
 docker compose -f "$COMPOSE_FILE" exec -T -e PGPASSWORD="$PGPASSWORD" "$SERVICE" \
   pg_dump --schema-only --no-owner --no-privileges -U "$PGUSER" "$PGDATABASE" \
-  > "$ROOT/portfolio-1-database-design/evidence/schema_dump.txt"
+  > "$ROOT/portfolio-1-database-design/evidence/script-output/schema_dump.txt"
 
-mkdir -p "$ROOT/portfolio-2-query-optimisation/evidence"
+mkdir -p "$ROOT/portfolio-2-query-optimisation/evidence/script-output"
 psql_in_container -f - < "$ROOT/portfolio-2-query-optimisation/queries.sql" \
-  > "$ROOT/portfolio-2-query-optimisation/evidence/query_results.txt" 2>&1
+  > "$ROOT/portfolio-2-query-optimisation/evidence/script-output/query_results.txt" 2>&1
 
 # optimisation.sql drops idx_transaction_reference, runs EXPLAIN on Q3, recreates
 # the index (text_pattern_ops) and runs EXPLAIN again, plus the Q1 join plan.
 psql_in_container -f - < "$ROOT/portfolio-2-query-optimisation/optimisation.sql" \
-  > "$ROOT/portfolio-2-query-optimisation/evidence/explain_plans.txt" 2>&1
+  > "$ROOT/portfolio-2-query-optimisation/evidence/script-output/explain_plans.txt" 2>&1
 
-mkdir -p "$ROOT/portfolio-3-transactions-concurrency/evidence"
+mkdir -p "$ROOT/portfolio-3-transactions-concurrency/evidence/script-output"
 psql_in_container -f - < "$ROOT/portfolio-3-transactions-concurrency/transactions.sql" \
-  > "$ROOT/portfolio-3-transactions-concurrency/evidence/transaction_run.txt" 2>&1
+  > "$ROOT/portfolio-3-transactions-concurrency/evidence/script-output/transaction_run.txt" 2>&1
 
-echo "Done. ValPay portfolio evidence updated (PostgreSQL)."
+echo "Done. ValPay portfolio evidence updated (PostgreSQL): outputs in portfolio-*/evidence/script-output/."
