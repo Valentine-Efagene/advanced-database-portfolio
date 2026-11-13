@@ -1,0 +1,72 @@
+=== Portfolio 3: concurrent payouts on wallet 1 with SELECT ... FOR UPDATE ===
+
++----------------+----------------+
+| account_number | balance_before |
++----------------+----------------+
+| VP1000000001   |      244500.00 |
++----------------+----------------+
+(1 row)
+
+--- Session A ---
+[A] BEGIN
++--------------------+-----------------+
+| a_lock_acquired_at | a_reads_balance |
++--------------------+-----------------+
+| 01:44:32.855       |       244500.00 |
++--------------------+-----------------+
+(1 row)
+
+[A] holding row lock on wallet 1 for 10 seconds (simulated payout processing)
++----------+
+| pg_sleep |
++----------+
+|          |
++----------+
+(1 row)
+
++----------------+
+| a_committed_at |
++----------------+
+| 01:44:42.968   |
++----------------+
+(1 row)
+
+[A] COMMIT: debited 1,000.00
+
+--- Session B (started after A acquired the row lock) ---
+[B] BEGIN
++---------------------+
+| b_requested_lock_at |
++---------------------+
+| 01:44:34.067        |
++---------------------+
+(1 row)
+
++--------------------+-----------------+
+| b_lock_acquired_at | b_reads_balance |
++--------------------+-----------------+
+| 01:44:42.968       |       243500.00 |
++--------------------+-----------------+
+(1 row)
+
+[B] COMMIT: debited 500.00
+
+--- Observer ---
+Observer (taken while session B is blocked):
++-----------+--------+-----------------+---------------+----------------+--------------------------------------------------------------+
+|  session  | state  | wait_event_type |  wait_event   | blocked_by_pid |                        current_query                         |
++-----------+--------+-----------------+---------------+----------------+--------------------------------------------------------------+
+| session_a | active | Timeout         | PgSleep       | {}             | SELECT pg_sleep(10);                                         |
+| session_b | active | Lock            | transactionid | {1125}         | SELECT to_char(clock_timestamp(), 'HH24:MI:SS.MS') AS b_lock |
++-----------+--------+-----------------+---------------+----------------+--------------------------------------------------------------+
+(2 rows)
+
+
++----------------+---------------+
+| account_number | balance_after |
++----------------+---------------+
+| VP1000000001   |     243000.00 |
++----------------+---------------+
+(1 row)
+
+Expected: balance_after = balance_before - 1,000.00 - 500.00 (no lost update).

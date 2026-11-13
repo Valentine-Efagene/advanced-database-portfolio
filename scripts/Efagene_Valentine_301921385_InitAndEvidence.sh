@@ -65,4 +65,6 @@ mkdir -p "$ROOT/portfolio-3-transactions-concurrency/evidence/script-output"
 psql_in_container -f - < "$ROOT/portfolio-3-transactions-concurrency/Efagene_Valentine_301921385_P3_Transactions.sql" \
   > "$ROOT/portfolio-3-transactions-concurrency/evidence/script-output/Efagene_Valentine_301921385_P3_TransactionRun.txt" 2>&1
 
+"$ROOT/portfolio-3-transactions-concurrency/Efagene_Valentine_301921385_P3_ConcurrencyDemo.sh" < /dev/null > /dev/null
+
 echo "Done. ValPay portfolio evidence updated (PostgreSQL): outputs in portfolio-*/evidence/script-output/."
