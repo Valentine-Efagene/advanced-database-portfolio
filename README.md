@@ -3,7 +3,7 @@
 **Student:** Valentine Efagene · **MIVA ID:** 301921385  
 **Case study:** [ValPay](./CASE_STUDY.md) — fintech wallet and P2P transfers  
 
-Private repository for assessors: grant read access before marking.
+Public repository for assessor review (no access request required).
 
 ## Structure
 
