@@ -1,0 +1,37 @@
+digraph ValPay {
+  graph [rankdir=TB, bgcolor=white, fontname="Helvetica", nodesep=0.35, ranksep=0.45];
+  node [shape=box, style="rounded,filled", fillcolor="#f5f5f5", fontname="Helvetica", fontsize=11];
+  edge [fontname="Helvetica", fontsize=9, color="#555555"];
+
+  legend [shape=plaintext, fillcolor=white, label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+      <TR><TD><B>ValPay — reference production architecture</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">Documented from vendor docs; not deployed by me for this CA.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">Local evidence: Docker Compose (PostgreSQL + MongoDB on localhost).</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  mobile [label="Mobile app / ValPay API"];
+  gateway [label="API gateway + WAF"];
+  mobile -> gateway;
+
+  subgraph cluster_data {
+    label="Data tier (cloud — design reference)";
+    style=dashed;
+    color="#888888";
+
+    rds [label="RDS PostgreSQL\nPrimary (ledger OLTP)", fillcolor="#e8f4ea"];
+    replica [label="Read replica(s)\nstatements / BI", fillcolor="#e8f4ea"];
+    atlas [label="MongoDB Atlas\nKYC + activity events", fillcolor="#fff4e6"];
+    redis [label="Redis / ElastiCache\nidempotency, rate limits", fillcolor="#fce8e8"];
+
+    rds -> replica [label="sync repl.", style=dashed];
+  }
+
+  gateway -> rds;
+  gateway -> atlas;
+  gateway -> redis;
+
+  local [shape=box, style="rounded,filled", fillcolor="#e3f2fd", label="Local CA stack\nDocker: PostgreSQL :5432\nMongoDB :27017"];
+  legend -> local [style=invis];
+}
