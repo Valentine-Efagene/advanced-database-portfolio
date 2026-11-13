@@ -10,10 +10,10 @@ Fintech workloads often split **ledger OLTP** (relational, Portfolio 1–3) from
 
 ## Files
 
-- [kyc_schema.json](./kyc_schema.json)
-- [sample_kyc.jsonl](./sample_kyc.jsonl)
-- [sample_activity.jsonl](./sample_activity.jsonl)
-- [queries.mongodb.js](./queries.mongodb.js)
-- [SUITABILITY.md](./SUITABILITY.md)
+- [Efagene_Valentine_301921385_P4_KYCSchema.json](./Efagene_Valentine_301921385_P4_KYCSchema.json)
+- [Efagene_Valentine_301921385_P4_SampleKYC.jsonl](./Efagene_Valentine_301921385_P4_SampleKYC.jsonl)
+- [Efagene_Valentine_301921385_P4_SampleActivity.jsonl](./Efagene_Valentine_301921385_P4_SampleActivity.jsonl)
+- [Efagene_Valentine_301921385_P4_Queries.mongodb.js](./Efagene_Valentine_301921385_P4_Queries.mongodb.js)
+- [Efagene_Valentine_301921385_P4_SUITABILITY.md](./Efagene_Valentine_301921385_P4_SUITABILITY.md)
 
-Optional: `docker run -p 27017:27017 mongo:7` then `mongosh valpay --file queries.mongodb.js`
+Optional: `docker run -p 27017:27017 mongo:7` then `mongosh valpay --file Efagene_Valentine_301921385_P4_Queries.mongodb.js`

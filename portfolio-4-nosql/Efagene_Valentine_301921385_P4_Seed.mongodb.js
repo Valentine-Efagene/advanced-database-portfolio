@@ -1,16 +1,16 @@
 // ValPay Portfolio 4: deterministic MongoDB seed
 // ---------------------------------------------------------------------------
-// Run from this folder:  mongosh "mongodb://localhost:27017/valpay" --file seed.mongodb.js
-// (scripts/nosql_evidence.sh runs it for you and writes evidence/script-output/load_summary.txt)
+// Run from this folder:  mongosh "mongodb://localhost:27017/valpay" --file Efagene_Valentine_301921385_P4_Seed.mongodb.js
+// (scripts/Efagene_Valentine_301921385_NoSQLEvidence.sh runs it for you and writes evidence/script-output/Efagene_Valentine_301921385_P4_LoadSummary.txt)
 //
-// Links to the relational model (Portfolio 1, scripts/seed.sql):
+// Links to the relational model (Portfolio 1, scripts/Efagene_Valentine_301921385_Seed.sql):
 //   * customer_id is customer.customer_id (1-203). 1 = Valentine Efagene,
 //     2 = Chioma Okonkwo, 3 = the ValPay ops wallet (no retail KYC or app
 //     activity), 4-203 = the 200 bulk customers.
 //   * account_number is wallet_account.account_number (VP1000000001,
 //     VP1000000002, VP2000000001-VP2000000200).
 //   * transfer_initiated events reuse the exact references, senders,
-//     beneficiaries and amounts of the 28,000 bulk TRANSFER rows in seed.sql,
+//     beneficiaries and amounts of the 28,000 bulk TRANSFER rows in Efagene_Valentine_301921385_Seed.sql,
 //     recomputed here with the same md5() formula, so any event can be traced
 //     to wallet_transaction.reference in PostgreSQL.
 //   * Derived KYC tiers match customer.kyc_tier (BVN = TIER1, BVN + NIN =
@@ -34,7 +34,7 @@ const DAY = 86400000, HOUR = 3600000, MIN = 60000, SEC = 1000;
 const pad = (n, w) => String(n).padStart(w, '0');
 const ymd = (d) => d.toISOString().slice(0, 10).replace(/-/g, '');
 
-// ---- customers (mirrors scripts/seed.sql) ----------------------------------
+// ---- customers (mirrors scripts/Efagene_Valentine_301921385_Seed.sql) ----------------------------------
 const FN = ['Adaeze','Tunde','Ngozi','Emeka','Funke','Ibrahim','Aisha','Chinedu',
             'Bola','Kelechi','Yemi','Zainab','Obinna','Amaka','Segun','Halima',
             'Uche','Temitope','Musa','Ifeoma'];
@@ -82,8 +82,8 @@ const FARM = [0, 1, 2, 3, 4].map((k) => ({
 // ---- reset ------------------------------------------------------------------
 ['kyc_documents', 'activity_events', 'fraud_signals'].forEach((n) => db.getCollection(n).drop());
 
-// ---- kyc_documents: validator = kyc_schema.json + one cross-field rule -------
-const schemaPath = (typeof __dirname !== 'undefined' ? __dirname + '/' : '') + 'kyc_schema.json';
+// ---- kyc_documents: validator = Efagene_Valentine_301921385_P4_KYCSchema.json + one cross-field rule -------
+const schemaPath = (typeof __dirname !== 'undefined' ? __dirname + '/' : '') + 'Efagene_Valentine_301921385_P4_KYCSchema.json';
 const kycSchema = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
 db.createCollection('kyc_documents', {
   validator: {
@@ -215,7 +215,7 @@ function ruleHit(c, device, ip, ts, rule, score, action, extra) {
 }
 const score = (key, lo) => Number((lo + (h32(key) % Math.round((0.99 - lo) * 100 + 1)) / 100).toFixed(2));
 
-// 28,000 bulk transfers recomputed from seed.sql
+// 28,000 bulk transfers recomputed from Efagene_Valentine_301921385_Seed.sql
 const T0 = Date.UTC(2025, 0, 1);
 for (let n = 1; n <= 40000; n++) {
   if (n % 20 >= 14) continue;                              // TOPUP / BILL_PAY rows
@@ -271,7 +271,7 @@ for (let b = 0; b < 240; b++) {
   ruleHit(c, farm.device_id, farm.ip, start + tries * 15 * SEC, 'failed_login_burst', score(k + ':s', 0.85), 'BLOCK', { channel: 'web', failed_attempts: tries });
 }
 
-// Valentine and Chioma: the seed.sql transfers and the Portfolio 3 demo transfer (VP-TXN-OK-004)
+// Valentine and Chioma: the Efagene_Valentine_301921385_Seed.sql transfers and the Portfolio 3 demo transfer (VP-TXN-OK-004)
 const V = customers[0], C2 = customers[1];
 [[V, 'VP-TXN-20260915-002', 15000.00, C2, '2026-09-15T11:20:00Z'],
  [C2, 'VP-TXN-20261001-003', 5000.00, V, '2026-10-01T08:45:00Z'],
@@ -376,5 +376,5 @@ print('Indexes:');
   });
 });
 print('');
-print('kyc_documents validator (from kyc_schema.json plus the REJECTED rule):');
+print('kyc_documents validator (from Efagene_Valentine_301921385_P4_KYCSchema.json plus the REJECTED rule):');
 printjson(db.getCollectionInfos({ name: 'kyc_documents' })[0].options);

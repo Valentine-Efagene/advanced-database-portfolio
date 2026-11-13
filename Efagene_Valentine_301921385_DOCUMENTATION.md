@@ -2,7 +2,7 @@
 
 **Course:** MIT 8103 Advanced Database Systems  
 **Student:** Valentine Efagene · **MIVA ID:** 301921385  
-**Case study:** [ValPay](./CASE_STUDY.md)
+**Case study:** [ValPay](./Efagene_Valentine_301921385_CASE_STUDY.md)
 
 ## 1. Case study statement
 
@@ -18,7 +18,7 @@ ValPay provides digital wallets in NGN, P2P transfers, top-ups, and auditable tr
 | 4 | NoSQL and advanced data models | `portfolio-4-nosql/` |
 | 5 | Distributed and cloud database exercise | `portfolio-5-distributed-cloud/` |
 
-Evidence text outputs: run `./scripts/init_and_evidence.sh`.
+Evidence text outputs: run `./scripts/Efagene_Valentine_301921385_InitAndEvidence.sh`.
 
 ## 3. Technical reflection
 
@@ -33,4 +33,4 @@ A ledger + wallet balance model mirrors fintech constraints: balances must match
 
 ## 5. AI use declaration
 
-Cursor AI assisted with scaffolding, SQL/Mongo examples, and documentation. All SQL was executed via `scripts/init_and_evidence.sh`. I verified balances, rollback behaviour, and query results before submission.
+Cursor AI assisted with scaffolding, SQL/Mongo examples, and documentation. All SQL was executed via `scripts/Efagene_Valentine_301921385_InitAndEvidence.sh`. I verified balances, rollback behaviour, and query results before submission.

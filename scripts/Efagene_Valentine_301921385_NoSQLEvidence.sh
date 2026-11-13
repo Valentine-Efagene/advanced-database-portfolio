@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 # Portfolio 4 (MongoDB): load the seed, run the queries and write evidence.
 #
-#   scripts/nosql_evidence.sh            # uses the mongo service in portfolio-5-distributed-cloud/docker-compose.yml
-#   MONGO_MODE=local scripts/nosql_evidence.sh   # uses a local mongosh and MONGO_URI (default mongodb://localhost:27017)
+#   scripts/Efagene_Valentine_301921385_NoSQLEvidence.sh            # uses the mongo service in portfolio-5-distributed-cloud/Efagene_Valentine_301921385_P5_DockerCompose.yml
+#   MONGO_MODE=local scripts/Efagene_Valentine_301921385_NoSQLEvidence.sh   # uses a local mongosh and MONGO_URI (default mongodb://localhost:27017)
 #
 # Writes portfolio-4-nosql/evidence/script-output/*.txt and refreshes the two sample .jsonl files.
-# If the PostgreSQL service is running (scripts/init_and_evidence.sh), it also
+# If the PostgreSQL service is running (scripts/Efagene_Valentine_301921385_InitAndEvidence.sh), it also
 # cross-checks the MongoDB events and KYC tiers against the relational data.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 P4="$ROOT/portfolio-4-nosql"
 EVIDENCE="$P4/evidence/script-output"
-COMPOSE_FILE="$ROOT/portfolio-5-distributed-cloud/docker-compose.yml"
+COMPOSE_FILE="$ROOT/portfolio-5-distributed-cloud/Efagene_Valentine_301921385_P5_DockerCompose.yml"
 MONGO_MODE="${MONGO_MODE:-docker}"
 MONGO_SERVICE="${VALPAY_MONGO_SERVICE:-mongo}"
 MONGO_URI="${MONGO_URI:-mongodb://localhost:27017}"
@@ -53,25 +53,25 @@ done
 mongo_eval 'db.runCommand({ ping: 1 }).ok' >/dev/null 2>&1 || { echo "MongoDB did not become ready in time."; exit 1; }
 
 if [ "$MONGO_MODE" != local ]; then
-  # copy the scripts and kyc_schema.json into the container
+  # copy the scripts and Efagene_Valentine_301921385_P4_KYCSchema.json into the container
   compose exec -T "$MONGO_SERVICE" sh -c "rm -rf $WORKDIR && mkdir -p $WORKDIR"
-  for f in kyc_schema.json seed.mongodb.js queries.mongodb.js explain.mongodb.js validation.mongodb.js samples.mongodb.js; do
+  for f in Efagene_Valentine_301921385_P4_KYCSchema.json Efagene_Valentine_301921385_P4_Seed.mongodb.js Efagene_Valentine_301921385_P4_Queries.mongodb.js Efagene_Valentine_301921385_P4_Explain.mongodb.js Efagene_Valentine_301921385_P4_Validation.mongodb.js Efagene_Valentine_301921385_P4_Samples.mongodb.js; do
     compose cp "$P4/$f" "$MONGO_SERVICE:$WORKDIR/$f" >/dev/null 2>&1
   done
 fi
 
 mkdir -p "$EVIDENCE"
 echo "Loading seed..."
-mongo_file seed.mongodb.js       > "$EVIDENCE/load_summary.txt" 2>&1
+mongo_file Efagene_Valentine_301921385_P4_Seed.mongodb.js       > "$EVIDENCE/Efagene_Valentine_301921385_P4_LoadSummary.txt" 2>&1
 echo "Running queries..."
-mongo_file queries.mongodb.js    > "$EVIDENCE/query_results.txt" 2>&1
+mongo_file Efagene_Valentine_301921385_P4_Queries.mongodb.js    > "$EVIDENCE/Efagene_Valentine_301921385_P4_QueryResults.txt" 2>&1
 echo "Running explain before/after..."
-mongo_file explain.mongodb.js    > "$EVIDENCE/explain_plans.txt" 2>&1
+mongo_file Efagene_Valentine_301921385_P4_Explain.mongodb.js    > "$EVIDENCE/Efagene_Valentine_301921385_P4_ExplainPlans.txt" 2>&1
 echo "Running validation tests..."
-mongo_file validation.mongodb.js > "$EVIDENCE/validation_rejection.txt" 2>&1
+mongo_file Efagene_Valentine_301921385_P4_Validation.mongodb.js > "$EVIDENCE/Efagene_Valentine_301921385_P4_ValidationRejection.txt" 2>&1
 
-echo "Refreshing sample_kyc.jsonl and sample_activity.jsonl..."
-mongo_file samples.mongodb.js | awk -v dir="$P4" '
+echo "Refreshing Efagene_Valentine_301921385_P4_SampleKYC.jsonl and Efagene_Valentine_301921385_P4_SampleActivity.jsonl..."
+mongo_file Efagene_Valentine_301921385_P4_Samples.mongodb.js | awk -v dir="$P4" '
   /^##FILE / { out = dir "/" $2; printf "" > out; next }
   out != "" { print >> out }'
 
@@ -91,7 +91,7 @@ pg_query() {
   fi
 }
 
-CHECK="$EVIDENCE/cross_store_check.txt"
+CHECK="$EVIDENCE/Efagene_Valentine_301921385_P4_CrossStoreCheck.txt"
 if pg_available; then
   echo "Cross-checking against PostgreSQL..."
   TMP="$(mktemp -d)"
@@ -133,11 +133,11 @@ if pg_available; then
     echo ""
     echo "Sample: VP-TXN-OK-004 in both stores"
     echo "  MongoDB   : $(grep '^VP-TXN-OK-004|' "$TMP/mongo_transfers" || echo 'not found')"
-    echo "  PostgreSQL: $(grep '^VP-TXN-OK-004|' "$TMP/pg_transfers" || echo 'not found (run scripts/init_and_evidence.sh first)')"
+    echo "  PostgreSQL: $(grep '^VP-TXN-OK-004|' "$TMP/pg_transfers" || echo 'not found (run scripts/Efagene_Valentine_301921385_InitAndEvidence.sh first)')"
   } > "$CHECK"
   rm -rf "$TMP"
 else
-  echo "PostgreSQL is not running; skipped cross_store_check.txt (run scripts/init_and_evidence.sh first)."
+  echo "PostgreSQL is not running; skipped Efagene_Valentine_301921385_P4_CrossStoreCheck.txt (run scripts/Efagene_Valentine_301921385_InitAndEvidence.sh first)."
 fi
 
 echo "Done. Portfolio 4 evidence written to portfolio-4-nosql/evidence/script-output/"

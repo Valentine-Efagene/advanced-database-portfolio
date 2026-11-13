@@ -1,8 +1,8 @@
 // ValPay Portfolio 4: index evidence with explain('executionStats')
 // Each test drops the collection's secondary indexes, explains the query
 // (COLLSCAN), creates only the index under test and explains again (IXSCAN),
-// then restores every index exactly as seed.mongodb.js created it.
-// Run after seed.mongodb.js:  mongosh "mongodb://localhost:27017/valpay" --file explain.mongodb.js
+// then restores every index exactly as Efagene_Valentine_301921385_P4_Seed.mongodb.js created it.
+// Run after Efagene_Valentine_301921385_P4_Seed.mongodb.js:  mongosh "mongodb://localhost:27017/valpay" --file Efagene_Valentine_301921385_P4_Explain.mongodb.js
 db = db.getSiblingDB('valpay');
 
 function stages(p) {
@@ -44,7 +44,7 @@ function test(title, coll, indexName, run) {
   const after = report('AFTER (' + indexName + ' created)', run());
   print('  Docs examined: ' + before.totalDocsExamined + ' -> ' + after.totalDocsExamined +
         ' (' + (before.totalDocsExamined / Math.max(after.totalDocsExamined, 1)).toFixed(0) + 'x fewer)');
-  // put every other index back exactly as seed.mongodb.js created it
+  // put every other index back exactly as Efagene_Valentine_301921385_P4_Seed.mongodb.js created it
   specs.filter((ix) => ix.name !== indexName).forEach((ix) => {
     const o = {};
     ['name', 'sparse', 'partialFilterExpression', 'expireAfterSeconds'].forEach((k) => { if (ix[k] !== undefined) o[k] = ix[k]; });
@@ -52,23 +52,23 @@ function test(title, coll, indexName, run) {
   });
 }
 
-// E1. Customer timeline (queries.mongodb.js Q5)
+// E1. Customer timeline (Efagene_Valentine_301921385_P4_Queries.mongodb.js Q5)
 test('E1. Customer timeline: customer_id 57, latest 20 events', 'activity_events',
   'customer_timeline',
   () => db.activity_events.find({ customer_id: 57 }).sort({ ts: -1 }).limit(20));
 
-// E2. Transfers in a 7-day window (queries.mongodb.js Q6)
+// E2. Transfers in a 7-day window (Efagene_Valentine_301921385_P4_Queries.mongodb.js Q6)
 test('E2. transfer_initiated events, 1-7 October 2026', 'activity_events',
   'event_time',
   () => db.activity_events.find({ event: 'transfer_initiated',
     ts: { $gte: ISODate('2026-10-01T00:00:00Z'), $lt: ISODate('2026-10-08T00:00:00Z') } }));
 
-// E3. Trace one ledger reference (queries.mongodb.js Q11)
+// E3. Trace one ledger reference (Efagene_Valentine_301921385_P4_Queries.mongodb.js Q11)
 test('E3. Trace reference VP-TXN-20261026-039684', 'activity_events',
   'txn_reference',
   () => db.activity_events.find({ reference: 'VP-TXN-20261026-039684' }));
 
-// E4. KYC review queue on the partial index (queries.mongodb.js Q1)
+// E4. KYC review queue on the partial index (Efagene_Valentine_301921385_P4_Queries.mongodb.js Q1)
 test('E4. KYC review queue: PENDING, oldest first', 'kyc_documents',
   'pending_review_queue',
   () => db.kyc_documents.find({ status: 'PENDING' }).sort({ submitted_at: 1 }));

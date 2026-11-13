@@ -1,6 +1,6 @@
 # Portfolio 2 — Query optimisation (ValPay)
 
-[queries.sql](./queries.sql) — reporting SQL  
-[optimisation.sql](./optimisation.sql) — indexes + `EXPLAIN (FORMAT TEXT)`
+[Efagene_Valentine_301921385_P2_Queries.sql](./Efagene_Valentine_301921385_P2_Queries.sql) — reporting SQL  
+[Efagene_Valentine_301921385_P2_Optimisation.sql](./Efagene_Valentine_301921385_P2_Optimisation.sql) — indexes + `EXPLAIN (FORMAT TEXT)`
 
-Evidence: [evidence/](./evidence/) (regenerate with `./scripts/init_and_evidence.sh`).
+Evidence: [evidence/](./evidence/) (regenerate with `./scripts/Efagene_Valentine_301921385_InitAndEvidence.sh`).

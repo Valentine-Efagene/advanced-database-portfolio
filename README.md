@@ -1,7 +1,7 @@
 # MIT 8103 — Advanced Database Systems Portfolio
 
 **Student:** Valentine Efagene · **MIVA ID:** 301921385  
-**Case study:** [ValPay](./CASE_STUDY.md) — fintech wallet and P2P transfers  
+**Case study:** [ValPay](./Efagene_Valentine_301921385_CASE_STUDY.md) — fintech wallet and P2P transfers  
 
 Public repository for assessor review (no access request required).
 
@@ -14,12 +14,12 @@ Public repository for assessor review (no access request required).
 | [portfolio-3-transactions-concurrency](./portfolio-3-transactions-concurrency/) | ACID transfers (commit / rollback) |
 | [portfolio-4-nosql](./portfolio-4-nosql/) | MongoDB KYC and activity events |
 | [portfolio-5-distributed-cloud](./portfolio-5-distributed-cloud/) | Cloud HA, CAP, deployment notes |
-| [DOCUMENTATION.md](./DOCUMENTATION.md) | Summary, reflection, references |
+| [Efagene_Valentine_301921385_DOCUMENTATION.md](./Efagene_Valentine_301921385_DOCUMENTATION.md) | Summary, reflection, references |
 
 ## Regenerate evidence
 
 ```bash
-./scripts/init_and_evidence.sh
+./scripts/Efagene_Valentine_301921385_InitAndEvidence.sh
 ```
 
 Starts PostgreSQL via Docker, loads schema/seed, and refreshes `portfolio-*/evidence/*.txt`.
@@ -35,6 +35,6 @@ portfolio-3-transactions-concurrency/
 portfolio-4-nosql/
 portfolio-5-distributed-cloud/
 README.md
-DOCUMENTATION.md
+Efagene_Valentine_301921385_DOCUMENTATION.md
 scripts/
 ```

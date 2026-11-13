@@ -1,4 +1,4 @@
--- Seed data for ValPay (run after schema.sql)
+-- Seed data for ValPay (run after Efagene_Valentine_301921385_P1_Schema.sql)
 
 INSERT INTO customer (email, full_name, phone, kyc_tier) VALUES
   ('valentine.efagene@example.com', 'Valentine Efagene', '+2348010000001', 'TIER2'),
@@ -41,7 +41,7 @@ INSERT INTO transaction_audit (transaction_id, event) VALUES
 -- ---------------------------------------------------------------------------
 -- The hand-picked rows above keep their IDs and values, so the Q1 statement,
 -- the Portfolio 3 balances for accounts 1 and 2 (250,000.00 / 85,000.50) and
--- the references used in transactions.sql (VP-TXN-OK-004, VP-TXN-FAIL-001)
+-- the references used in Efagene_Valentine_301921385_P3_Transactions.sql (VP-TXN-OK-004, VP-TXN-FAIL-001)
 -- still behave the same.
 --
 -- This section adds:
@@ -58,7 +58,7 @@ INSERT INTO transaction_audit (transaction_id, event) VALUES
 --     top-up row.
 --   * References keep the VP-TXN-YYYYMMDD-NNNNNN format with a 6-digit running
 --     number, so they cannot collide with the 3-digit references above or with
---     the ones transactions.sql inserts.
+--     the ones Efagene_Valentine_301921385_P3_Transactions.sql inserts.
 --   * Most transactions are SUCCESS. A small number are FAILED or PENDING
 --     (recent ones only), and only SUCCESS rows get ledger postings.
 --   * Accounts and amounts are picked with md5() of the row number instead of

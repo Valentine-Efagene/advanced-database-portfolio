@@ -5,10 +5,10 @@ MongoDB (KYC + activity — Portfolio 4):
   mongodb://localhost:27017/valpay
 
 Start stack:
-  docker compose -f portfolio-5-distributed-cloud/docker-compose.yml up -d
+  docker compose -f portfolio-5-distributed-cloud/Efagene_Valentine_301921385_P5_DockerCompose.yml up -d
 
 Regenerate relational evidence:
-  ./scripts/init_and_evidence.sh
+  ./scripts/Efagene_Valentine_301921385_InitAndEvidence.sh
 
 Production mapping:
   AWS RDS PostgreSQL Multi-AZ + read replica

@@ -1,5 +1,5 @@
 // ValPay Portfolio 4: operational queries on the seeded data
-// Run after seed.mongodb.js:  mongosh "mongodb://localhost:27017/valpay" --file queries.mongodb.js
+// Run after Efagene_Valentine_301921385_P4_Seed.mongodb.js:  mongosh "mongodb://localhost:27017/valpay" --file Efagene_Valentine_301921385_P4_Queries.mongodb.js
 db = db.getSiblingDB('valpay');
 
 // print one document per line; long documents wrap at a field boundary

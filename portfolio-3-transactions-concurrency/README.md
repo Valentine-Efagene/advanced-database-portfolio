@@ -7,4 +7,4 @@ P2P transfer implemented with `BEGIN` / `COMMIT` / `ROLLBACK` on PostgreSQL:
 
 Uses standard MVCC transactions; production ValPay would add `SELECT … FOR UPDATE` on `wallet_account` rows under concurrent API load.
 
-Run: `./scripts/init_and_evidence.sh` → [evidence/transaction_run.txt](./evidence/transaction_run.txt)
+Run: `./scripts/Efagene_Valentine_301921385_InitAndEvidence.sh` → [evidence/script-output/Efagene_Valentine_301921385_P3_TransactionRun.txt](./evidence/script-output/Efagene_Valentine_301921385_P3_TransactionRun.txt)

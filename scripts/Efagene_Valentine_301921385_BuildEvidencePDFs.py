@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Build one evidence report PDF per portfolio evidence folder.
 
-Input:  portfolio-*/evidence/script-output/*.txt (written by scripts/init_and_evidence.sh
-        and scripts/nosql_evidence.sh), hand-written portfolio-*/evidence/*.txt notes,
+Input:  portfolio-*/evidence/script-output/*.txt (written by scripts/Efagene_Valentine_301921385_InitAndEvidence.sh
+        and scripts/Efagene_Valentine_301921385_NoSQLEvidence.sh), hand-written portfolio-*/evidence/*.txt notes,
         and the screenshots under portfolio-*/evidence/screenshots/
-Output: portfolio-*/evidence/evidence-report.pdf
+Output: portfolio-*/evidence/Efagene_Valentine_301921385_P*_EvidenceReport.pdf
 
 Usage (from the repo root or anywhere):
-    python3 scripts/build_evidence_pdfs.py            # all portfolios
-    python3 scripts/build_evidence_pdfs.py 2 4        # only portfolios 2 and 4
+    python3 scripts/Efagene_Valentine_301921385_BuildEvidencePDFs.py            # all portfolios
+    python3 scripts/Efagene_Valentine_301921385_BuildEvidencePDFs.py 2 4        # only portfolios 2 and 4
 
 Dependencies:
   - Python 3.9+ (standard library only)
@@ -45,23 +45,23 @@ P1 = {
     "title": "Portfolio 1: Database Design",
     "sections": [
         ("Entity relationship diagram", [
-            ("img", "valpay-erd-dbeaver.png",
+            ("img", "Efagene_Valentine_301921385_P1_ValpayERD_DBeaver.png",
              "ValPay ER diagram exported from DBeaver: seven tables with columns, data types, primary keys and relationships."),
-            ("img", "evidence/screenshots/02-er-diagram.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P1_Screenshot02_ERDiagram.png",
              "DBeaver Diagram tab for the public schema of the valpay database."),
         ]),
         ("Tables and columns", [
-            ("img", "evidence/screenshots/01-schema-tables.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P1_Screenshot01_SchemaTables.png",
              "DBeaver table editor: wallet_transaction columns, data types, defaults and NOT NULL settings."),
         ]),
         ("Constraints and indexes", [
-            ("img", "evidence/screenshots/03-constraints-indexes.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P1_Screenshot03_ConstraintsIndexes.png",
              "DBeaver: wallet_account constraints, including the foreign key to customer."),
-            ("img", "evidence/screenshots/03b-indexes.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P1_Screenshot03b_Indexes.png",
              "DBeaver: wallet_transaction indexes, including idx_transaction_reference (text_pattern_ops)."),
         ]),
         ("Schema dump (pg_dump --schema-only)", [
-            ("txt", "schema_dump.txt", None),
+            ("txt", "Efagene_Valentine_301921385_P1_SchemaDump.txt", None),
         ]),
     ],
 }
@@ -72,43 +72,43 @@ P2 = {
     "sections": [
         ("Query results", [
             ("h", "Q1. Wallet statement for a customer"),
-            ("img", "evidence/screenshots/q1-wallet-statement.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P2_Screenshot_Q1WalletStatement.png",
              "Q1 in DBeaver: wallet statement for valentine.efagene@example.com, newest first."),
-            ("txt", "query_results.txt", "Q1:"),
+            ("txt", "Efagene_Valentine_301921385_P2_QueryResults.txt", "Q1:"),
             ("h", "Q2. Daily successful transfer volume"),
-            ("img", "evidence/screenshots/q2-daily-volume.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P2_Screenshot_Q2DailyVolume.png",
              "Q2 in DBeaver: successful transfer count and total amount per day for the latest 14 days."),
-            ("txt", "query_results.txt", "Q2:"),
+            ("txt", "Efagene_Valentine_301921385_P2_QueryResults.txt", "Q2:"),
             ("h", "Q3. Lookup by reference prefix"),
-            ("img", "evidence/screenshots/q3-reference-lookup.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P2_Screenshot_Q3ReferenceLookup.png",
              "Q3 in DBeaver: latest 20 transactions whose reference starts with VP-TXN-202610."),
-            ("txt", "query_results.txt", "Q3:"),
+            ("txt", "Efagene_Valentine_301921385_P2_QueryResults.txt", "Q3:"),
             ("h", "Q4. Accounts below the monitoring threshold"),
-            ("img", "evidence/screenshots/q4-low-balance.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P2_Screenshot_Q4LowBalance.png",
              "Q4 in DBeaver: active accounts with a balance below the internal threshold."),
-            ("txt", "query_results.txt", "Q4:"),
+            ("txt", "Efagene_Valentine_301921385_P2_QueryResults.txt", "Q4:"),
             ("h", "Q5. Pending or failed transactions"),
-            ("img", "evidence/screenshots/q5-pending-failed.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P2_Screenshot_Q5PendingFailed.png",
              "Q5 in DBeaver: PENDING and FAILED transactions for operations review."),
-            ("txt", "query_results.txt", "Q5:"),
+            ("txt", "Efagene_Valentine_301921385_P2_QueryResults.txt", "Q5:"),
             ("h", "Q6. Ledger reconciliation"),
-            ("img", "evidence/screenshots/q6-ledger-reconciliation.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P2_Screenshot_Q6LedgerReconciliation.png",
              "Q6 in DBeaver: accounts checked against CREDIT minus DEBIT postings, with the mismatch count."),
-            ("txt", "query_results.txt", "Q6:"),
+            ("txt", "Efagene_Valentine_301921385_P2_QueryResults.txt", "Q6:"),
         ]),
         ("Execution plans", [
             ("h", "Q3 before idx_transaction_reference"),
-            ("img", "evidence/screenshots/explain-q3-before.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P2_Screenshot_ExplainQ3Before.png",
              "Q3 before the index: sequential scan on wallet_transaction."),
-            ("txt", "explain_plans.txt", "Q3 BEFORE"),
+            ("txt", "Efagene_Valentine_301921385_P2_ExplainPlans.txt", "Q3 BEFORE"),
             ("h", "Q3 after idx_transaction_reference"),
-            ("img", "evidence/screenshots/explain-q3-after.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P2_Screenshot_ExplainQ3After.png",
              "Q3 after the index: bitmap index scan on idx_transaction_reference."),
-            ("txt", "explain_plans.txt", "Q3 AFTER"),
+            ("txt", "Efagene_Valentine_301921385_P2_ExplainPlans.txt", "Q3 AFTER"),
             ("h", "Q1 join plan"),
-            ("img", "evidence/screenshots/explain-q1-join.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P2_Screenshot_ExplainQ1Join.png",
              "Q1 plan: nested loops using idx_ledger_account and wallet_transaction_pkey."),
-            ("txt", "explain_plans.txt", "EXPLAIN Q1"),
+            ("txt", "Efagene_Valentine_301921385_P2_ExplainPlans.txt", "EXPLAIN Q1"),
         ]),
     ],
 }
@@ -118,26 +118,26 @@ P3 = {
     "title": "Portfolio 3: Transactions and Concurrency",
     "sections": [
         ("Balances before the tests", [
-            ("img", "evidence/screenshots/01-balances-before.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P3_Screenshot01_BalancesBefore.png",
              "Balances of accounts VP1000000001, VP1000000002 and VP9999999999 before the transfer tests."),
-            ("txt", "transaction_run.txt", "Balances before"),
+            ("txt", "Efagene_Valentine_301921385_P3_TransactionRun.txt", "Balances before"),
         ]),
         ("Test A: failed transfer and rollback", [
-            ("img", "evidence/screenshots/02a-test-a-update-zero-rows.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P3_Screenshot02a_TestAUpdateZeroRows.png",
              "Test A: the guarded balance UPDATE for 999,999.00 NGN affects 0 rows."),
-            ("img", "evidence/screenshots/02-test-a-rollback.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P3_Screenshot02_TestARollback.png",
              "Test A after ROLLBACK: no wallet_transaction row with reference VP-TXN-FAIL-001."),
-            ("img", "evidence/screenshots/02b-balance-unchanged.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P3_Screenshot02b_BalanceUnchanged.png",
              "Test A after ROLLBACK: balance of account 1 unchanged."),
-            ("txt", "transaction_run.txt", "Test A"),
+            ("txt", "Efagene_Valentine_301921385_P3_TransactionRun.txt", "Test A"),
         ]),
         ("Test B: successful transfer and commit", [
-            ("img", "evidence/screenshots/03-test-b-commit.png",
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P3_Screenshot03_TestBCommit.png",
              "Test B: the 2,500 NGN transfer script from account 1 to account 2 executed and committed."),
-            ("txt", "transaction_run.txt", "Test B"),
-            ("img", "evidence/screenshots/04-after-transfer.png",
+            ("txt", "Efagene_Valentine_301921385_P3_TransactionRun.txt", "Test B"),
+            ("img", "evidence/screenshots/Efagene_Valentine_301921385_P3_Screenshot04_AfterTransfer.png",
              "After Test B: VP-TXN-OK-004 with status SUCCESS and the new balances of both accounts."),
-            ("txt", "transaction_run.txt", "After successful"),
+            ("txt", "Efagene_Valentine_301921385_P3_TransactionRun.txt", "After successful"),
         ]),
     ],
 }
@@ -149,83 +149,83 @@ P4 = {
     "title": "Portfolio 4: NoSQL (MongoDB)",
     "sections": [
         ("Seed load", [
-            ("img", C + "c01-databases-collections.png",
+            ("img", C + "Efagene_Valentine_301921385_P4_Compass01_DatabasesCollections.png",
              "MongoDB Compass: collections in the valpay database with document counts."),
-            ("img", S + "01_seed_load_summary.png",
+            ("img", S + "Efagene_Valentine_301921385_P4_Screenshot01_SeedLoadSummary.png",
              "mongosh: seed load summary with document counts, breakdowns and indexes."),
-            ("txt", "load_summary.txt", None),
+            ("txt", "Efagene_Valentine_301921385_P4_LoadSummary.txt", None),
         ]),
         ("Index evidence (explain)", [
             ("h", "Customer timeline and transfer window"),
-            ("img", S + "02_explain_timeline_and_window.png",
+            ("img", S + "Efagene_Valentine_301921385_P4_Screenshot02_ExplainTimelineAndWindow.png",
              "mongosh: explain() for the customer timeline and the transfer_initiated window, before and after indexing."),
-            ("txt", "explain_plans.txt", "E1."),
-            ("txt", "explain_plans.txt", "E2."),
-            ("img", C + "c07-activity-indexes.png",
+            ("txt", "Efagene_Valentine_301921385_P4_ExplainPlans.txt", "E1."),
+            ("txt", "Efagene_Valentine_301921385_P4_ExplainPlans.txt", "E2."),
+            ("img", C + "Efagene_Valentine_301921385_P4_Compass07_ActivityIndexes.png",
              "MongoDB Compass: indexes on activity_events."),
-            ("img", C + "c08-activity-explain.png",
+            ("img", C + "Efagene_Valentine_301921385_P4_Compass08_ActivityExplain.png",
              "MongoDB Compass: explain plan for the customer timeline query using an index scan."),
             ("h", "Reference trace and pending KYC queue"),
-            ("img", S + "03_explain_reference_and_pending_queue.png",
+            ("img", S + "Efagene_Valentine_301921385_P4_Screenshot03_ExplainReferenceAndPendingQueue.png",
              "mongosh: explain() for the reference trace and the pending KYC queue with its partial index."),
-            ("txt", "explain_plans.txt", "E3."),
-            ("txt", "explain_plans.txt", "E4."),
-            ("txt", "explain_plans.txt", "Partial index coverage"),
-            ("txt", "explain_plans.txt", "not used for VERIFIED"),
-            ("img", C + "c05-kyc-indexes.png",
+            ("txt", "Efagene_Valentine_301921385_P4_ExplainPlans.txt", "E3."),
+            ("txt", "Efagene_Valentine_301921385_P4_ExplainPlans.txt", "E4."),
+            ("txt", "Efagene_Valentine_301921385_P4_ExplainPlans.txt", "Partial index coverage"),
+            ("txt", "Efagene_Valentine_301921385_P4_ExplainPlans.txt", "not used for VERIFIED"),
+            ("img", C + "Efagene_Valentine_301921385_P4_Compass05_KYCIndexes.png",
              "MongoDB Compass: indexes on kyc_documents, including the partial pending_review_queue index."),
         ]),
         ("Schema validation", [
-            ("img", C + "c06-kyc-validation.png",
+            ("img", C + "Efagene_Valentine_301921385_P4_Compass06_KYCValidation.png",
              "MongoDB Compass: $jsonSchema validation rules on kyc_documents."),
-            ("img", S + "04_validation_enum_rejection.png",
+            ("img", S + "Efagene_Valentine_301921385_P4_Screenshot04_ValidationEnumRejection.png",
              "mongosh: insert with an unknown document type rejected by the validator."),
-            ("img", S + "05_validation_rejected_rule_and_valid_insert.png",
+            ("img", S + "Efagene_Valentine_301921385_P4_Screenshot05_ValidationRejectedRuleAndValidInsert.png",
              "mongosh: REJECTED document without rejection_reason refused, then a valid PASSPORT insert accepted."),
-            ("txt", "validation_rejection.txt", "V1."),
-            ("txt", "validation_rejection.txt", "V2."),
-            ("txt", "validation_rejection.txt", "V3."),
-            ("txt", "validation_rejection.txt", "V4."),
-            ("txt", "validation_rejection.txt", "V5."),
+            ("txt", "Efagene_Valentine_301921385_P4_ValidationRejection.txt", "V1."),
+            ("txt", "Efagene_Valentine_301921385_P4_ValidationRejection.txt", "V2."),
+            ("txt", "Efagene_Valentine_301921385_P4_ValidationRejection.txt", "V3."),
+            ("txt", "Efagene_Valentine_301921385_P4_ValidationRejection.txt", "V4."),
+            ("txt", "Efagene_Valentine_301921385_P4_ValidationRejection.txt", "V5."),
         ]),
         ("KYC queries", [
-            ("img", C + "c02-kyc-documents.png",
+            ("img", C + "Efagene_Valentine_301921385_P4_Compass02_KYCDocuments.png",
              "MongoDB Compass: documents in kyc_documents."),
-            ("img", C + "c03-kyc-filter-pending.png",
+            ("img", C + "Efagene_Valentine_301921385_P4_Compass03_KYCFilterPending.png",
              "MongoDB Compass: kyc_documents filtered on status PENDING."),
-            ("img", C + "c04-kyc-schema.png",
+            ("img", C + "Efagene_Valentine_301921385_P4_Compass04_KYCSchema.png",
              "MongoDB Compass: schema analysis of kyc_documents."),
-            ("img", S + "06_kyc_queue_funnel_tiers.png",
+            ("img", S + "Efagene_Valentine_301921385_P4_Screenshot06_KYCQueueFunnelTiers.png",
              "mongosh: KYC review queue, funnel by document type and status, rejection reasons and derived tiers (Q1 to Q4)."),
-            ("txt", "query_results.txt", "Q1."),
-            ("txt", "query_results.txt", "Q2."),
-            ("txt", "query_results.txt", "Q3."),
-            ("txt", "query_results.txt", "Q4."),
+            ("txt", "Efagene_Valentine_301921385_P4_QueryResults.txt", "Q1."),
+            ("txt", "Efagene_Valentine_301921385_P4_QueryResults.txt", "Q2."),
+            ("txt", "Efagene_Valentine_301921385_P4_QueryResults.txt", "Q3."),
+            ("txt", "Efagene_Valentine_301921385_P4_QueryResults.txt", "Q4."),
         ]),
         ("Activity queries", [
-            ("img", S + "08_timeline_window_trace.png",
+            ("img", S + "Efagene_Valentine_301921385_P4_Screenshot08_TimelineWindowTrace.png",
              "mongosh: customer timeline, transfers initiated 1 to 7 October 2026 and the VP-TXN-OK-004 trace (Q5, Q6, Q11)."),
-            ("txt", "query_results.txt", "Q5."),
-            ("txt", "query_results.txt", "Q6."),
-            ("txt", "query_results.txt", "Q11."),
+            ("txt", "Efagene_Valentine_301921385_P4_QueryResults.txt", "Q5."),
+            ("txt", "Efagene_Valentine_301921385_P4_QueryResults.txt", "Q6."),
+            ("txt", "Efagene_Valentine_301921385_P4_QueryResults.txt", "Q11."),
         ]),
         ("Fraud queries", [
-            ("img", C + "c09-fraud-aggregation.png",
+            ("img", C + "Efagene_Valentine_301921385_P4_Compass09_FraudAggregation.png",
              "MongoDB Compass: aggregation of fraud_rule_hit events grouped by rule, with hits and average score."),
-            ("img", C + "c10-fraud-signals.png",
+            ("img", C + "Efagene_Valentine_301921385_P4_Compass10_FraudSignals.png",
              "MongoDB Compass: documents in fraud_signals."),
-            ("img", S + "07_fraud_rules_and_risky_devices.png",
+            ("img", S + "Efagene_Valentine_301921385_P4_Screenshot07_FraudRulesAndRiskyDevices.png",
              "mongosh: fraud rule hits by rule and the top risky devices."),
-            ("txt", "query_results.txt", "Q7."),
-            ("txt", "query_results.txt", "Q8."),
-            ("txt", "query_results.txt", "Q9."),
-            ("txt", "query_results.txt", "Q10."),
-            ("txt", "query_results.txt", "Q12."),
+            ("txt", "Efagene_Valentine_301921385_P4_QueryResults.txt", "Q7."),
+            ("txt", "Efagene_Valentine_301921385_P4_QueryResults.txt", "Q8."),
+            ("txt", "Efagene_Valentine_301921385_P4_QueryResults.txt", "Q9."),
+            ("txt", "Efagene_Valentine_301921385_P4_QueryResults.txt", "Q10."),
+            ("txt", "Efagene_Valentine_301921385_P4_QueryResults.txt", "Q12."),
         ]),
         ("Cross-store check with PostgreSQL", [
-            ("img", S + "09_runner_and_cross_store_check.png",
+            ("img", S + "Efagene_Valentine_301921385_P4_Screenshot09_RunnerAndCrossStoreCheck.png",
              "Evidence runner output and the cross-store check between MongoDB and PostgreSQL."),
-            ("txt", "cross_store_check.txt", None),
+            ("txt", "Efagene_Valentine_301921385_P4_CrossStoreCheck.txt", None),
         ]),
     ],
 }
@@ -235,7 +235,7 @@ P5 = {
     "title": "Portfolio 5: Distributed and Cloud Deployment",
     "sections": [
         ("Connection notes", [
-            ("txt", "connection_notes.txt", None),
+            ("txt", "Efagene_Valentine_301921385_P5_ConnectionNotes.txt", None),
         ]),
     ],
 }
@@ -471,7 +471,7 @@ def build(num, spec, keep_html=False):
         f'<style>{CSS % {"short": short}}</style></head><body>{body}</body></html>'
     )
 
-    out = evdir / "evidence-report.pdf"
+    out = evdir / f"Efagene_Valentine_301921385_P{num}_EvidenceReport.pdf"
     if keep_html:
         (Path(tempfile.gettempdir()) / f"evidence-p{num}.html").write_text(doc, encoding="utf-8")
     HTML(string=doc, base_url=str(pdir)).write_pdf(out)

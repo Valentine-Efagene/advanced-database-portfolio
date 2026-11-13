@@ -1,6 +1,6 @@
 // ValPay Portfolio 4: schema validation evidence for kyc_documents
-// The validator is kyc_schema.json plus one rule: REJECTED needs metadata.rejection_reason.
-// Run after seed.mongodb.js:  mongosh "mongodb://localhost:27017/valpay" --file validation.mongodb.js
+// The validator is Efagene_Valentine_301921385_P4_KYCSchema.json plus one rule: REJECTED needs metadata.rejection_reason.
+// Run after Efagene_Valentine_301921385_P4_Seed.mongodb.js:  mongosh "mongodb://localhost:27017/valpay" --file Efagene_Valentine_301921385_P4_Validation.mongodb.js
 db = db.getSiblingDB('valpay');
 
 // print one document per line; long documents wrap at a field boundary
